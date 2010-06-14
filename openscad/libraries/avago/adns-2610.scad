@@ -6,7 +6,7 @@
 // adns2610_render_part=1; // adns2610()
 // adns2610_render_part=2; // adns2610_oc0()
 // adns2610_render_part=3; // parametric adns2610_oc0 example
-include <../generic/pin_socket.scad>
+use <../generic/pin_socket.scad>
  adns2610_render_part=4; // render pin_socket at pin locations
 
 module adns2610_pin(
