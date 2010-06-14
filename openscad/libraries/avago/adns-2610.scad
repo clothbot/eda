@@ -7,7 +7,8 @@
 // adns2610_render_part=2; // adns2610_oc0()
 // adns2610_render_part=3; // parametric adns2610_oc0 example
 use <../generic/pin_socket.scad>
- adns2610_render_part=4; // render pin_socket at pin locations
+// adns2610_render_part=4; // render pin_socket at pin locations
+adns2610_render_part=5; // render adns2610 with pin sockets and ceramic resonator sockets.
 
 module adns2610_pin(
 	pinDTh=0.0
@@ -60,6 +61,46 @@ module adns2610_placeAtPinLocations(
       child(i);
     // pin8
     translate([-pin2pin/2,row2row,0]) rotate([0,0,180])
+      child(i);
+  }
+}
+
+module adns2610_placeAtPin(
+	pinNumber=1
+	, pin2pin=2.00
+	, row2row=12.85
+	) {
+  for (i = [0 : $children-1]) {
+    // pin1
+    if( pinNumber == 1 ) 
+     child(i);
+    // pin2
+    if( pinNumber == 2 ) 
+     translate([pin2pin,0,0])
+      child(i);
+    // pin3
+    if( pinNumber == 3 ) 
+     translate([2*pin2pin,0,0])
+      child(i);
+    // pin4
+    if( pinNumber == 4 ) 
+     translate([3*pin2pin,0,0])
+      child(i);
+    // pin5
+    if( pinNumber == 5 ) 
+     translate([3*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
+      child(i);
+    // pin6
+    if( pinNumber == 6 ) 
+     translate([2*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
+      child(i);
+    // pin7
+    if( pinNumber == 7 ) 
+     translate([1*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
+      child(i);
+    // pin8
+    if( pinNumber == 8 ) 
+     translate([-pin2pin/2,row2row,0]) rotate([0,0,180])
       child(i);
   }
 }
@@ -183,3 +224,37 @@ if( adns2610_render_part==4 ) {
 	);
   }
 }
+
+if( adns2610_render_part==5 ) {
+  echo("Rendering adns2610 with sockets and ceramic resonator...");
+  adns2610();
+  adns2610_placeAtPinLocations() {
+    color([0,0,1.0]) pin_socket(
+        pinH=10.0
+        , socketH=2.5
+        , pinW=1.6
+        , socketW=2.2
+	);
+  }
+  adns2610_placeAtPin(pinNumber=1) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,4.0+1.6/2,1.0],center=false);
+    translate([-1.0,-4.0,0]) 
+      color([0,1.0,0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=1.9
+	);
+  }
+  adns2610_placeAtPin(pinNumber=2) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,4.0+1.6/2,1.0],center=false);
+    translate([1.0,-4.0,0]) 
+      color([0,1.0,0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=1.9
+	);
+  }}
