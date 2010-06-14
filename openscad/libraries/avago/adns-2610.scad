@@ -2,12 +2,12 @@
 
 // Pin 1 is [0,0,0] unless using adns2610_oc0
 
- adns2610_render_part=0;
+// adns2610_render_part=0;
 // adns2610_render_part=1; // adns2610()
 // adns2610_render_part=2; // adns2610_oc0()
 // adns2610_render_part=3; // parametric adns2610_oc0 example
 include <../generic/pin_socket.scad>
-// adns2610_render_part=4; // render pin_socket at pin locations
+ adns2610_render_part=4; // render pin_socket at pin locations
 
 module adns2610_pin(
 	pinDTh=0.0
@@ -179,7 +179,7 @@ if( adns2610_render_part==4 ) {
         pinH=10.0
         , socketH=2.5
         , pinW=1.6
-        , socketW=2.0
+        , socketW=2.2
 	);
   }
 }
