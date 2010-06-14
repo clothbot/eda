@@ -263,25 +263,37 @@ if( adns2610_render_part==5 ) {
   // GND connects to pin 6
   adns2610_placeAtPin(pinNumber=6) {
     translate([1.2/2,0,0]) rotate([0,0,180])
-      cube(size=[1.2,6.0+1.6/2,1.0],center=false);
-    translate([-1.5,-6.0,0]) 
+      cube(size=[1.2,5.0+1.6/2,1.0],center=false);
+    translate([0.0,-5.0,0]) 
       color([0,0.0,0]) pin_socket(
         pinH=10.0
         , socketH=1.5
         , pinW=1.6
-        , socketW=2.4
+        , socketW=2.0
 	);
   }
   // VDD connects to pin 7
   adns2610_placeAtPin(pinNumber=7) {
     translate([1.2/2,0,0]) rotate([0,0,180])
-      cube(size=[1.2,6.0+1.6/2,1.0],center=false);
-    translate([1.5,-6.0,0]) 
+      cube(size=[1.2,3.0+1.6/2,1.0],center=false);
+    translate([0.0,-3.0,0]) 
       color([1.0,0.0,0]) pin_socket(
         pinH=10.0
         , socketH=1.5
         , pinW=1.6
-        , socketW=2.4
+        , socketW=2.0
+	);
+  }
+  // REFA 2.2uF cap connects to pin 8 and GND
+  adns2610_placeAtPin(pinNumber=8) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,5.0+1.6/2,1.0],center=false);
+    translate([0.0,-5.0,0]) 
+      color([0,1.0,1.0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=2.0
 	);
   }
 }
