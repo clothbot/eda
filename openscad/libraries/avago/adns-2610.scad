@@ -1,6 +1,11 @@
 // Model of Avago Technologies ADNS-2610
 
-// Pin 1 is [0,0,0]
+// Pin 1 is [0,0,0] unless using adns2610_oc0
+
+adns2610_render_part=0;
+// adns2610_render_part=1; // adns2610()
+// adns2610_render_part=2; // adns2610_oc0()
+// adns2610_render_part=3; // parametric adns2610_oc0 example
 
 module adns2610_pin(
 	pinDTh=0.0
@@ -81,12 +86,67 @@ module adns2610(
     adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH, pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
 }
 
-adns2610();
+module adns2610_oc0(
+	pinDTh=0.0
+	, pinDH=0.0
+	, opticalDD=0.0
+	, opticalDZ=0.0
+	, pinH=5.15
+	, pinTh=0.25
+	, pinWB=0.50
+	, pinWT=0.90
+	, pin2TH=1.00
+	, pkgB2TH=3.18
+	, pin2pin=2.00
+	, pin2pkg=(12.85-9.10)/2
+	, row2row=12.85
+	, pkgW=9.10
+	, pkgL=9.90
+	, opticalXC=2.00
+	, opticalYC=4.55+(12.85-9.10)/2
+	, opticalD=5.60
+	, opticalZ=1.42
+	) {
+  translate([-opticalXC,-opticalYC,0])
+    adns2610(
+	pinDTh=pinDTh
+	, pinDH=pinDH
+	, opticalDD=opticalDD
+	, opticalDZ=opticalDZ
+	, pinH=pinH
+	, pinTh=pinTh
+	, pinWB=pinWB
+	, pinWT=pinWT
+	, pin2TH=pin2TH
+	, pkgB2TH=pkgB2TH
+	, pin2pin=pin2pin
+	, pin2pkg=pin2pkg
+	, row2row=row2row
+	, pkgW=pkgW
+	, pkgL=pkgL
+	, opticalXC=opticalXC
+	, opticalYC=opticalYC
+	, opticalD=opticalD
+	, opticalZ=opticalZ
+    );
+}
 
-translate([15,0,0])
-  adns2610(
+if( adns2610_render_part==1 ) {
+  echo("Rendering adns2610...");
+  adns2610();
+}
+
+if( adns2610_render_part==2 ) {
+  echo("Rendering adns2610_oc0...");
+  adns2610_oc0();
+}
+
+if( adns2610_render_part==3 ) {
+  echo("Rendering parametric adns2610_oc0 example...");
+  adns2610_oc0(
 	pinDTh=0.5
 	, pinDH=5.0
 	, opticalDD=0.2
 	, opticalDZ=5.0
   );
+}
