@@ -227,7 +227,7 @@ if( adns2610_render_part==4 ) {
 
 if( adns2610_render_part==5 ) {
   echo("Rendering adns2610 with sockets and ceramic resonator...");
-  adns2610();
+  adns2610(opticalZ=10.0);
   adns2610_placeAtPinLocations() {
     color([0,0,1.0]) pin_socket(
         pinH=10.0
@@ -236,6 +236,7 @@ if( adns2610_render_part==5 ) {
         , socketW=2.2
 	);
   }
+  // OSC_IN connects to pin 1
   adns2610_placeAtPin(pinNumber=1) {
     translate([1.2/2,0,0]) rotate([0,0,180])
       cube(size=[1.2,4.0+1.6/2,1.0],center=false);
@@ -247,6 +248,7 @@ if( adns2610_render_part==5 ) {
         , socketW=1.9
 	);
   }
+  // OSC_OUT connects to pin 2
   adns2610_placeAtPin(pinNumber=2) {
     translate([1.2/2,0,0]) rotate([0,0,180])
       cube(size=[1.2,4.0+1.6/2,1.0],center=false);
@@ -257,4 +259,30 @@ if( adns2610_render_part==5 ) {
         , pinW=1.6
         , socketW=1.9
 	);
-  }}
+  }
+  // GND connects to pin 6
+  adns2610_placeAtPin(pinNumber=6) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,6.0+1.6/2,1.0],center=false);
+    translate([-1.5,-6.0,0]) 
+      color([0,0.0,0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=2.4
+	);
+  }
+  // VDD connects to pin 7
+  adns2610_placeAtPin(pinNumber=7) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,6.0+1.6/2,1.0],center=false);
+    translate([1.5,-6.0,0]) 
+      color([1.0,0.0,0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=2.4
+	);
+  }
+}
+
