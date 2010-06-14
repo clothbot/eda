@@ -10,7 +10,7 @@ usage :
 all : pin_socket.stl
 
 pin_socket.stl :
-	$(OPENSCAD) -D render_part=1 -s pin_socket.stl pin_socket.scad
+	$(OPENSCAD) -D pin_socket_render_part=1 -s pin_socket.stl pin_socket.scad
 
 clean :
 	$(RM) *.stl

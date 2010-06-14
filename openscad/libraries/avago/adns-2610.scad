@@ -2,10 +2,12 @@
 
 // Pin 1 is [0,0,0] unless using adns2610_oc0
 
-// adns2610_render_part=0;
- adns2610_render_part=1; // adns2610()
+ adns2610_render_part=0;
+// adns2610_render_part=1; // adns2610()
 // adns2610_render_part=2; // adns2610_oc0()
 // adns2610_render_part=3; // parametric adns2610_oc0 example
+include <../generic/pin_socket.scad>
+// adns2610_render_part=4; // render pin_socket at pin locations
 
 module adns2610_pin(
 	pinDTh=0.0
@@ -31,6 +33,36 @@ module adns2610_pin(
   }
 }
 
+module adns2610_placeAtPinLocations(
+	pin2pin=2.00
+	, row2row=12.85
+	) {
+  for (i = [0 : $children-1]) {
+    // pin1
+    child(i);
+    // pin2
+    translate([pin2pin,0,0])
+      child(i);
+    // pin3
+    translate([2*pin2pin,0,0])
+      child(i);
+    // pin4
+    translate([3*pin2pin,0,0])
+      child(i);
+    // pin5
+    translate([3*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
+      child(i);
+    // pin6
+    translate([2*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
+      child(i);
+    // pin7
+    translate([1*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
+      child(i);
+    // pin8
+    translate([-pin2pin/2,row2row,0]) rotate([0,0,180])
+      child(i);
+  }
+}
 
 module adns2610(
 	pinDTh=0.0
@@ -64,32 +96,15 @@ module adns2610(
     // optical path top marker
     translate([opticalXC,opticalYC,-0.1]) cylinder($fa=15, $fs=0.1, r=opticalD/2,h=pkgB2TH+0.2,center=false);
   }
-  // pin1
-  adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH , pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
   // pin1 indicator
   color([1,1,1]-bodyColor)
     translate([0,pin2pkg+1.0,pkgB2TH]) sphere($fa=30, $fs=0.1, r=0.5,center=true);
-  // pin2
-  translate([pin2pin,0,0])
-    adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH, pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
-  // pin3
-  translate([2*pin2pin,0,0])
-    adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH, pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
-  // pin4
-  translate([3*pin2pin,0,0])
-    adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH, pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
-  // pin5
-  translate([3*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
-    adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH, pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
-  // pin6
-  translate([2*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
-    adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH, pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
-  // pin7
-  translate([1*pin2pin-pin2pin/2,row2row,0]) rotate([0,0,180])
-    adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH, pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
-  // pin8
-  translate([-pin2pin/2,row2row,0]) rotate([0,0,180])
-    adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH, pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
+  adns2610_placeAtPinLocations(
+	pin2pin=pin2pin
+	, row2row=row2row
+	) {
+    adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH , pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
+  }
 }
 
 module adns2610_oc0(
@@ -155,4 +170,16 @@ if( adns2610_render_part==3 ) {
 	, opticalDD=0.2
 	, opticalDZ=5.0
   );
+}
+
+if( adns2610_render_part==4 ) {
+  echo("Rendering pin_sockets at adns2610_placeAtPinLocations...");
+  adns2610_placeAtPinLocations() {
+    color([0,0,1.0]) pin_socket(
+        pinH=10.0
+        , socketH=2.5
+        , pinW=1.6
+        , socketW=2.0
+	);
+  }
 }

@@ -1,7 +1,7 @@
 // Pin Socket
 
-render_part=0;
-// render_part=1; // pin_socket()
+pin_socket_render_part=0;
+// pin_socket_render_part=1; // pin_socket()
 
 module pin_socket(
 	pinH=10.0
@@ -16,7 +16,7 @@ module pin_socket(
   cylinder(r=socketW/2,h=socketH,center=false);
 }
 
-if(render_part==1) {
+if(pin_socket_render_part==1) {
   echo("Rendering pin_socket...");
   pin_socket();
 }
