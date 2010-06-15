@@ -8,7 +8,9 @@
 // adns2610_render_part=3; // parametric adns2610_oc0 example
 use <../generic/pin_socket.scad>
 // adns2610_render_part=4; // render pin_socket at pin locations
-adns2610_render_part=5; // render adns2610 with pin sockets and ceramic resonator sockets.
+use <../tdk/fcr_m6.scad>
+// adns2610_render_part=5; // render adns2610 with pin sockets and ceramic resonator sockets.
+adns2610_render_part=6; // render inverse adns2610 with pin sockets and ceramic resonator sockets.
 
 module adns2610_pin(
 	pinDTh=0.0
@@ -193,6 +195,86 @@ module adns2610_oc0(
     );
 }
 
+module adns2610_dev_circuit() {
+  adns2610(opticalZ=10.0);
+  adns2610_placeAtPinLocations() {
+    color([0,0,1.0]) pin_socket(
+        pinH=10.0
+        , socketH=2.5
+        , pinW=1.6
+        , socketW=2.2
+	);
+  }
+  // OSC_IN connects to pin 1
+  adns2610_placeAtPin(pinNumber=1) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,4.0+1.2/2,2.0],center=false);
+    translate([-2.0,-4.0,0]) {
+      color([0,1.0,0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=1.9
+	);
+      fcr_m6();
+      rotate([0,0,-90]) translate([-1.2/2,0,0])
+        cube(size=[1.2,2.0,2.0],center=false);
+    }
+  }
+  // OSC_OUT connects to pin 2
+  adns2610_placeAtPin(pinNumber=2) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,4.0+1.2/2,2.0],center=false);
+    translate([2.0,-4.0,0]) {
+      color([0,1.0,0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=1.9
+	);
+      rotate([0,0,90]) translate([-1.2/2,0,0])
+        cube(size=[1.2,2.0,2.0],center=false);
+    }
+  }
+  // GND connects to pin 6
+  adns2610_placeAtPin(pinNumber=6) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,5.0+1.6/2,2.0],center=false);
+    translate([0.0,-5.0,0]) 
+      color([0,0.0,0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=2.0
+	);
+  }
+  // VDD connects to pin 7
+  adns2610_placeAtPin(pinNumber=7) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,3.0+1.6/2,2.0],center=false);
+    translate([0.0,-3.0,0]) 
+      color([1.0,0.0,0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=2.0
+	);
+  }
+  // REFA 2.2uF cap connects to pin 8 and GND
+  adns2610_placeAtPin(pinNumber=8) {
+    translate([1.2/2,0,0]) rotate([0,0,180])
+      cube(size=[1.2,5.0+1.6/2,2.0],center=false);
+    translate([0.0,-5.0,0]) 
+      color([0,1.0,1.0]) pin_socket(
+        pinH=10.0
+        , socketH=1.5
+        , pinW=1.6
+        , socketW=2.0
+	);
+  }
+
+}
+
 if( adns2610_render_part==1 ) {
   echo("Rendering adns2610...");
   adns2610();
@@ -226,75 +308,16 @@ if( adns2610_render_part==4 ) {
 }
 
 if( adns2610_render_part==5 ) {
-  echo("Rendering adns2610 with sockets and ceramic resonator...");
-  adns2610(opticalZ=10.0);
-  adns2610_placeAtPinLocations() {
-    color([0,0,1.0]) pin_socket(
-        pinH=10.0
-        , socketH=2.5
-        , pinW=1.6
-        , socketW=2.2
-	);
-  }
-  // OSC_IN connects to pin 1
-  adns2610_placeAtPin(pinNumber=1) {
-    translate([1.2/2,0,0]) rotate([0,0,180])
-      cube(size=[1.2,4.0+1.6/2,1.0],center=false);
-    translate([-1.0,-4.0,0]) 
-      color([0,1.0,0]) pin_socket(
-        pinH=10.0
-        , socketH=1.5
-        , pinW=1.6
-        , socketW=1.9
-	);
-  }
-  // OSC_OUT connects to pin 2
-  adns2610_placeAtPin(pinNumber=2) {
-    translate([1.2/2,0,0]) rotate([0,0,180])
-      cube(size=[1.2,4.0+1.6/2,1.0],center=false);
-    translate([1.0,-4.0,0]) 
-      color([0,1.0,0]) pin_socket(
-        pinH=10.0
-        , socketH=1.5
-        , pinW=1.6
-        , socketW=1.9
-	);
-  }
-  // GND connects to pin 6
-  adns2610_placeAtPin(pinNumber=6) {
-    translate([1.2/2,0,0]) rotate([0,0,180])
-      cube(size=[1.2,5.0+1.6/2,1.0],center=false);
-    translate([0.0,-5.0,0]) 
-      color([0,0.0,0]) pin_socket(
-        pinH=10.0
-        , socketH=1.5
-        , pinW=1.6
-        , socketW=2.0
-	);
-  }
-  // VDD connects to pin 7
-  adns2610_placeAtPin(pinNumber=7) {
-    translate([1.2/2,0,0]) rotate([0,0,180])
-      cube(size=[1.2,3.0+1.6/2,1.0],center=false);
-    translate([0.0,-3.0,0]) 
-      color([1.0,0.0,0]) pin_socket(
-        pinH=10.0
-        , socketH=1.5
-        , pinW=1.6
-        , socketW=2.0
-	);
-  }
-  // REFA 2.2uF cap connects to pin 8 and GND
-  adns2610_placeAtPin(pinNumber=8) {
-    translate([1.2/2,0,0]) rotate([0,0,180])
-      cube(size=[1.2,5.0+1.6/2,1.0],center=false);
-    translate([0.0,-5.0,0]) 
-      color([0,1.0,1.0]) pin_socket(
-        pinH=10.0
-        , socketH=1.5
-        , pinW=1.6
-        , socketW=2.0
-	);
+  echo("Rendering adns2610_dev_circuit (sockets and ceramic resonator)...");
+  adns2610_dev_circuit();
+}
+
+if( adns2610_render_part==6 ) {
+  echo("Rendering inverse adns2610_dev_circuit...");
+  difference () {
+    translate([-5,-7,-2.0])
+      cube([15,28,3.2],center=false);
+    adns2610_dev_circuit();
   }
 }
 
