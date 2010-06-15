@@ -12,21 +12,23 @@ module fcr_m6(
   ) {
   $fs=0.1;
   $fa=15;
-  // pin 1
-  color(pinColor) {
+  union() {
+   // pin 1
+   color(pinColor) {
     translate([0,0,-5.0])
       cylinder(r=0.55/2,h=5.0,center=false);
     sphere(r=0.55/2);
-  }
-  // pin 2
-  color(pinColor) {
+   }
+   // pin 2
+   color(pinColor) {
     translate([6.0,0,-5.0])
       cylinder(r=0.55/2,h=5.0,center=false);
     sphere(r=0.55/2);
-  }
-  // body
-  color(bodyColor) translate([0,-2.0,0])
+   }
+   // body
+   color(bodyColor) translate([0,-2.0,0])
     cube(size=[6.0,4.0,7.0], center=false);
+  }
 }
 
 if( fcr_m6_render_part==1 ) {

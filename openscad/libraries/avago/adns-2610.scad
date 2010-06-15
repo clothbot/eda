@@ -26,7 +26,7 @@ module adns2610_pin(
         ) {
   $fs=0.1;
   $fa=15;
-  color(pinColor) {
+  union() color(pinColor) {
     translate([-pinWB/2,-(pinTh+pinDTh)/2,pkgB2TH-pinH-pinDH-pin2TH])
         cube(size=[pinWB, (pinTh+pinDTh), pinH+pinDH], center=false);
     translate([-pinWT/2, -(pinTh+pinDTh)/2, 0])
@@ -129,7 +129,8 @@ module adns2610(
 	, opticalZ=1.42
 	, bodyColor=[64/255,64/255,64/255]
 	) {
-  color(bodyColor) {
+  union() {
+   color(bodyColor) {
     // package
     translate([opticalXC-4.45,opticalYC-4.55,0])
       cube(size=[pkgL, pkgW, pkgB2TH],center=false);
@@ -138,15 +139,16 @@ module adns2610(
       cylinder($fa=15, $fs=0.1, r=(opticalD+opticalDD)/2,h=opticalZ+opticalDZ,center=false);
     // optical path top marker
     translate([opticalXC,opticalYC,-0.1]) cylinder($fa=15, $fs=0.1, r=opticalD/2,h=pkgB2TH+0.2,center=false);
-  }
-  // pin1 indicator
-  color([1,1,1]-bodyColor)
+   // pin1 indicator
+   color([1,1,1]-bodyColor)
     translate([0,pin2pkg+1.0,pkgB2TH]) sphere($fa=30, $fs=0.1, r=0.5,center=true);
-  adns2610_placeAtPinLocations(
+   }
+   adns2610_placeAtPinLocations(
 	pin2pin=pin2pin
 	, row2row=row2row
 	) {
     adns2610_pin( pinDTh=pinDTh, pinDH=pinDH, pinH=pinH , pinTh=pinTh , pinWB=pinWB , pinWT=pinWT , pin2TH=pin2TH , pkgB2TH=pkgB2TH, pin2pkg=pin2pkg);
+   }
   }
 }
 
@@ -197,7 +199,7 @@ module adns2610_oc0(
 
 module adns2610_dev_circuit() {
   adns2610(opticalZ=10.0);
-  adns2610_placeAtPinLocations() {
+  union() adns2610_placeAtPinLocations() {
     color([0,0,1.0]) pin_socket(
         pinH=10.0
         , socketH=2.5
@@ -206,7 +208,7 @@ module adns2610_dev_circuit() {
 	);
   }
   // OSC_IN connects to pin 1
-  adns2610_placeAtPin(pinNumber=1) {
+  union() adns2610_placeAtPin(pinNumber=1) {
     translate([1.2/2,0,0]) rotate([0,0,180])
       cube(size=[1.2,4.0+1.2/2,2.0],center=false);
     translate([-2.0,-4.0,0]) {
@@ -222,7 +224,7 @@ module adns2610_dev_circuit() {
     }
   }
   // OSC_OUT connects to pin 2
-  adns2610_placeAtPin(pinNumber=2) {
+  union() adns2610_placeAtPin(pinNumber=2) {
     translate([1.2/2,0,0]) rotate([0,0,180])
       cube(size=[1.2,4.0+1.2/2,2.0],center=false);
     translate([2.0,-4.0,0]) {
@@ -237,7 +239,7 @@ module adns2610_dev_circuit() {
     }
   }
   // GND connects to pin 6
-  adns2610_placeAtPin(pinNumber=6) {
+  union() adns2610_placeAtPin(pinNumber=6) {
     translate([1.2/2,0,0]) rotate([0,0,180])
       cube(size=[1.2,5.0+1.6/2,2.0],center=false);
     translate([0.0,-5.0,0]) 
@@ -249,7 +251,7 @@ module adns2610_dev_circuit() {
 	);
   }
   // VDD connects to pin 7
-  adns2610_placeAtPin(pinNumber=7) {
+  union() adns2610_placeAtPin(pinNumber=7) {
     translate([1.2/2,0,0]) rotate([0,0,180])
       cube(size=[1.2,3.0+1.6/2,2.0],center=false);
     translate([0.0,-3.0,0]) 
@@ -261,7 +263,7 @@ module adns2610_dev_circuit() {
 	);
   }
   // REFA 2.2uF cap connects to pin 8 and GND
-  adns2610_placeAtPin(pinNumber=8) {
+  union() adns2610_placeAtPin(pinNumber=8) {
     translate([1.2/2,0,0]) rotate([0,0,180])
       cube(size=[1.2,5.0+1.6/2,2.0],center=false);
     translate([0.0,-5.0,0]) 
@@ -315,9 +317,9 @@ if( adns2610_render_part==5 ) {
 if( adns2610_render_part==6 ) {
   echo("Rendering inverse adns2610_dev_circuit...");
   difference () {
-    translate([-5,-7,-2.0])
+    translate([-5,-7,0.0])
       cube([15,28,3.2],center=false);
-    adns2610_dev_circuit();
+    translate([0,0,2.0]) adns2610_dev_circuit();
   }
 }
 

@@ -11,9 +11,11 @@ module pin_socket(
 	) {
   $fs=0.1;
   $fa=60.0;
-  translate([0,0,-pinH])
+  union() {
+   translate([0,0,-pinH])
 	cylinder(r=pinW/2,h=pinH+socketH,center=false);
-  cylinder(r=socketW/2,h=socketH,center=false);
+   cylinder(r=socketW/2,h=socketH,center=false);
+  }
 }
 
 if(pin_socket_render_part==1) {
