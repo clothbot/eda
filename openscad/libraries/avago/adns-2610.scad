@@ -10,7 +10,11 @@ use <../generic/pin_socket.scad>
 // adns2610_render_part=4; // render pin_socket at pin locations
 use <../tdk/fcr_m6.scad>
 // adns2610_render_part=5; // render adns2610 with pin sockets and ceramic resonator sockets.
-adns2610_render_part=6; // render inverse adns2610 with pin sockets and ceramic resonator sockets.
+// adns2610_render_part=6; // render inverse adns2610 with pin sockets and ceramic resonator sockets.
+adns2610_render_part=7; // render inverse adns2610 and slice.
+
+slice_z_index=0;
+slice_z_thickness=0.35;
 
 module adns2610_pin(
 	pinDTh=0.0
@@ -277,6 +281,14 @@ module adns2610_dev_circuit() {
 
 }
 
+module inverse_adns2610_dev_circuit() {
+  difference () {
+    translate([-5,-7,0.0])
+      cube([15,28,3.2],center=false);
+    translate([0,0,2.0]) adns2610_dev_circuit();
+  }
+}
+
 if( adns2610_render_part==1 ) {
   echo("Rendering adns2610...");
   adns2610();
@@ -315,11 +327,14 @@ if( adns2610_render_part==5 ) {
 }
 
 if( adns2610_render_part==6 ) {
-  echo("Rendering inverse adns2610_dev_circuit...");
-  difference () {
-    translate([-5,-7,0.0])
-      cube([15,28,3.2],center=false);
-    translate([0,0,2.0]) adns2610_dev_circuit();
-  }
+  echo("Rendering inverse_adns2610_dev_circuit...");
+  inverse_adns2610_dev_circuit();
 }
 
+if( adns2610_render_part==7 ) {
+  echo("Slice inverse adns2610_dev_circuit...");
+  projection(cut=true) {
+    translate([0,0,-slice_z_index*slice_z_thickness-slice_z_thickness/2])
+      inverse_adns2610_dev_circuit();
+  }
+}
