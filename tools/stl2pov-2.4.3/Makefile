@@ -6,7 +6,7 @@
 
 # Package name and version: BASENAME-VMAJOR.VMINOR.VPATCH.tar.gz
 BASENAME = stl2pov
-.include "version.inc"
+include version.inc
 
 # Add appropriate CFLAGS and LFLAGS
 CFLAGS ?= -O2 -pipe
@@ -80,10 +80,10 @@ install: $(BASENAME) $(BASENAME).1 LICENSE README INSTALL $(LOG)
 	install -d $(MANDIR)/man1
 	install -m 644 $(BASENAME).1 $(MANDIR)/man1
 	gzip -f $(MANDIR)/man1/$(BASENAME).1
-.if !defined(NOPORTDOCS)
+ifdef NOPORTDOCS
 	install -d $(DOCSDIR)
 	install -m 644 LICENSE README INSTALL $(LOG) $(DOCSDIR)
-.endif
+endif
 
 uninstall:;
 	@if [ `id -u` != 0 ]; then \
