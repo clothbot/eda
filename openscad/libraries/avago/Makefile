@@ -1,4 +1,5 @@
 OPENSCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD
+JOBPOOL=/opt/local/bin/jobpool -j 2 
 
 default : usage
 
@@ -35,7 +36,7 @@ sliced :
 	i="0" ;\
 	while [ $$i -lt 10 ] ; do \
 		echo " Slice "$$i"..." ;\
-		$(OPENSCAD) -D adns2610_render_part=7 -D slice_z_index=$$i -D slice_z_thickness=0.35 -x slice.$$i.dxf adns-2610.scad ;\
+		$(JOBPOOL) $(OPENSCAD) -D adns2610_render_part=7 -D slice_z_index=$$i -D slice_z_thickness=0.35 -x slice.$$i.dxf adns-2610.scad & \
 		i=$$[$$i+1] ;\
 		done
 
@@ -46,7 +47,7 @@ shelled :
 		echo "shell_2D(shell_minWall=1.5*0.35) {" >> shell.$$file.scad ; \
 		echo "  import_dxf("'"'"$$file"'"'");" >> shell.$$file.scad ; \
 		echo "}" >> shell.$$file.scad ; \
-		$(OPENSCAD) -x shell.$$file shell.$$file.scad ; \
+		$(JOBPOOL) $(OPENSCAD) -x shell.$$file shell.$$file.scad & \
 		echo "Done creating shell.$$file." ; \
 		done
 
@@ -57,7 +58,7 @@ fill_mask :
 		echo "  import_dxf("'"'"$$file"'"'");" >> fill_mask.$$file.scad ; \
 		echo "  import_dxf("'"'"shell.$$file"'"'");" >> fill_mask.$$file.scad ; \
 		echo "}" >> fill_mask.$$file.scad ; \
-		$(OPENSCAD) -x fill_mask.$$file fill_mask.$$file.scad ; \
+		$(JOBPOOL) $(OPENSCAD) -x fill_mask.$$file fill_mask.$$file.scad & \
 		echo "Done creating fill_mask.$$file." ; \
 		done
 
