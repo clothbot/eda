@@ -15,6 +15,7 @@ usage :
 	@echo "  make adns2610_dev_circuit.stl"
 	@echo "  make adns2610_dev_circuit_inv.stl"
 	@echo "  make sliced"
+	@echo "  make sliced shelled"
 
 all : adns2610.stl adns2610_oc0.stl adns2610_pin_sockets.stl adns2610_dev_circuit.stl adns2610_dev_circuit_inv.stl
 
@@ -42,6 +43,19 @@ sliced :
 		done
 #		$(counter) ;\
 
+shelled :
+	for file in *.dxf ; do \
+		echo "Creating shell.$$file..." ; \
+		echo "use <../../operations/shell.scad>" > shell.$$file.scad ; \
+		echo "shell_2D(shell_minWall=1.5*0.35) {" >> shell.$$file.scad ; \
+		echo "  import_dxf("'"'"$$file"'"'");" >> shell.$$file.scad ; \
+		echo "}" >> shell.$$file.scad ; \
+		$(OPENSCAD) -x shell.$$file shell.$$file.scad ; \
+		echo "Done creating shell.$$file." ; \
+		done
+
 clean :
 	$(RM) *.stl
+	$(RM) *.dxf
+	$(RM) shell.*.scad
 

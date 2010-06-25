@@ -1,5 +1,8 @@
 // Model of Avago Technologies ADNS-2610
 
+use <../../operations/slicer.scad>
+use <../../operations/shell.scad>
+
 // Pin 1 is [0,0,0] unless using adns2610_oc0
 
 // adns2610_render_part=0;
@@ -11,7 +14,9 @@ use <../generic/pin_socket.scad>
 use <../tdk/fcr_m6.scad>
 // adns2610_render_part=5; // render adns2610 with pin sockets and ceramic resonator sockets.
 // adns2610_render_part=6; // render inverse adns2610 with pin sockets and ceramic resonator sockets.
-adns2610_render_part=7; // render inverse adns2610 and slice.
+// adns2610_render_part=7; // render inverse adns2610 and slice.
+adns2610_render_part=8; // render inverse adns2610, create shell and slice.
+
 
 slice_z_index=0;
 slice_z_thickness=0.35;
@@ -289,6 +294,18 @@ module inverse_adns2610_dev_circuit() {
   }
 }
 
+module slicer(
+	slice_z_index=0
+	, slice_z_thickness=0.25
+	) {
+  for (i = [0 : $children-1]) {
+   projection(cut=true) {
+    translate([0,0,-slice_z_index*slice_z_thickness-slice_z_thickness/2])
+      child(i);
+   }
+  }
+}
+
 if( adns2610_render_part==1 ) {
   echo("Rendering adns2610...");
   adns2610();
@@ -333,8 +350,13 @@ if( adns2610_render_part==6 ) {
 
 if( adns2610_render_part==7 ) {
   echo("Slice inverse adns2610_dev_circuit...");
-  projection(cut=true) {
-    translate([0,0,-slice_z_index*slice_z_thickness-slice_z_thickness/2])
-      inverse_adns2610_dev_circuit();
+  slicer(slice_z_index=slice_z_index,slice_z_thickness=slice_z_thickness) inverse_adns2610_dev_circuit();
+}
+
+if( adns2610_render_part==8 ) {
+  echo("Slice shelled inverse adns2610_dev_circuit...");
+  shell_2D( shell_minWall=1.5*slice_z_thickness ) {
+	slicer(slice_z_index=slice_z_index,slice_z_thickness=slice_z_thickness) inverse_adns2610_dev_circuit();
   }
 }
+
