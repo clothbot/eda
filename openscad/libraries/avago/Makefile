@@ -1,9 +1,5 @@
 OPENSCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD
 
-# include gmsl
-# c_val := 0
-# counter = $(c_val)$(eval c_val := $(call plus,$(c_val),1))
-
 default : usage
 
 usage :
@@ -16,6 +12,7 @@ usage :
 	@echo "  make adns2610_dev_circuit_inv.stl"
 	@echo "  make sliced"
 	@echo "  make sliced shelled"
+	@echo "  make sliced shelled fill_mask"
 
 all : adns2610.stl adns2610_oc0.stl adns2610_pin_sockets.stl adns2610_dev_circuit.stl adns2610_dev_circuit_inv.stl
 
@@ -41,10 +38,9 @@ sliced :
 		$(OPENSCAD) -D adns2610_render_part=7 -D slice_z_index=$$i -D slice_z_thickness=0.35 -x slice.$$i.dxf adns-2610.scad ;\
 		i=$$[$$i+1] ;\
 		done
-#		$(counter) ;\
 
 shelled :
-	for file in *.dxf ; do \
+	for file in slice.*.dxf ; do \
 		echo "Creating shell.$$file..." ; \
 		echo "use <../../operations/shell.scad>" > shell.$$file.scad ; \
 		echo "shell_2D(shell_minWall=1.5*0.35) {" >> shell.$$file.scad ; \
@@ -54,8 +50,20 @@ shelled :
 		echo "Done creating shell.$$file." ; \
 		done
 
+fill_mask :
+	for file in slice.*.dxf ; do \
+		echo "Creating fill_mask.$$file..." ; \
+		echo "difference () {" > fill_mask.$$file.scad ; \
+		echo "  import_dxf("'"'"$$file"'"'");" >> fill_mask.$$file.scad ; \
+		echo "  import_dxf("'"'"shell.$$file"'"'");" >> fill_mask.$$file.scad ; \
+		echo "}" >> fill_mask.$$file.scad ; \
+		$(OPENSCAD) -x fill_mask.$$file fill_mask.$$file.scad ; \
+		echo "Done creating fill_mask.$$file." ; \
+		done
+
 clean :
 	$(RM) *.stl
 	$(RM) *.dxf
 	$(RM) shell.*.scad
+	$(RM) fill_mask.*.scad
 
