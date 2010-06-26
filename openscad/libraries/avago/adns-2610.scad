@@ -15,7 +15,8 @@ use <../tdk/fcr_m6.scad>
 // adns2610_render_part=5; // render adns2610 with pin sockets and ceramic resonator sockets.
 // adns2610_render_part=6; // render inverse adns2610 with pin sockets and ceramic resonator sockets.
 // adns2610_render_part=7; // render inverse adns2610 and slice.
-adns2610_render_part=8; // render inverse adns2610, create shell and slice.
+// adns2610_render_part=8; // render inverse adns2610, create shell and slice.
+adns2610_render_part=9; // render inverse adns2610 and slice_slab.
 
 
 slice_z_index=0;
@@ -360,3 +361,7 @@ if( adns2610_render_part==8 ) {
   }
 }
 
+if( adns2610_render_part==9 ) {
+  echo("Slice_slab inverse adns2610_dev_circuit...");
+  slicer_slab(slice_z_index=slice_z_index,slice_z_thickness=slice_z_thickness) inverse_adns2610_dev_circuit();
+}
