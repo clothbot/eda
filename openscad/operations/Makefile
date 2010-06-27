@@ -27,7 +27,7 @@ test_slicer.dxf : test_slicer.scad
 adns2610_test.dxf :
 	echo "use <slicer.scad>" > adns2610_test.scad
 	echo "slicer(slice_z_index=0,slice_z_thickness=0.25) {" >> adns2610_test.scad
-	echo "  import_stl("'"'"adns2610_dev_circuit_inv.stl"'"'");" >> adns2610_test.scad
+	echo "  import_stl("'"'"adns2610_dev_circuit_inv_noNulls.stl"'"'");" >> adns2610_test.scad
 	echo "}" >> adns2610_test.scad
 	$(OPENSCAD) -x adns2610_test.dxf adns2610_test.scad
 
