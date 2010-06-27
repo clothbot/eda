@@ -46,11 +46,8 @@ sliced_stl : adns2610_dev_circuit_inv.stl
 	echo "use <../../operations/slicer.scad>" > sliced_stl.scad 
 	echo "slice_z_index=0;" >> sliced_stl.scad 
 	echo "slice_z_thickness=0.35;" >> sliced_stl.scad 
-	echo "module slice_stl() {" >> sliced_stl.scad 
-	echo "  import_stl("'"'"adns2610_dev_circuit_inv.stl"'"'");" >> sliced_stl.scad 
-	echo "}" >> sliced_stl.scad 
 	echo "slicer(slice_z_index=slice_z_index,slice_z_thickness=slice_z_thickness) {" >> sliced_stl.scad 
-	echo "  slice_stl();" >> sliced_stl.scad 
+	echo "  import_stl("'"'"adns2610_dev_circuit_inv.stl"'"'");" >> sliced_stl.scad 
 	echo "}" >> sliced_stl.scad 
 	i="0" ;\
 	while [ $$i -lt 10 ] ; do \
