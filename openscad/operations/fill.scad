@@ -9,9 +9,9 @@ module bars(
 	) {
   rotate([0,0,angle]) {
 	square(size=[barWidth,minWidth], center=true);
-    assign( barCount=(minLength-(minLength)%(spacing+barWidth))/(spacing+barWidth) ) {
+    assign( barCount=(minLength-(minLength)%(spacing+barWidth))/(spacing+barWidth)+1 ) {
      for ( ln = [1 : 
-		(barCount-barCount%2)/2+1 ] ) {
+		(barCount-barCount%2)/2 ] ) {
       translate([ln*(spacing+barWidth),0])
         square(size=[barWidth,minWidth], center=true);
       translate([-ln*(spacing+barWidth),0])
@@ -38,19 +38,19 @@ module fill_linear(
 
 translate([0,0,-0.5]) color([0.5,0.5,0.5]) cube(size=[100,100,1.0],center=true);
 bars(
-	spacing=2.0
+	spacing=1.0
 	, barWidth=1.0
 	, minLength=100
 	, minWidth=100
 	, angle=0
 	);
 
-translate([0,0,2]) fill_linear(spacing=1.0,minLength=20,minWidth=20) {
+translate([0,0,2]) fill_linear(spacing=1.0,barWidth=4.0,minLength=20,minWidth=20) {
    circle(r=10.0);
   }
-translate([0,0,4]) fill_linear(spacing=2.0,minLength=20,minWidth=20, angle=60) {
+translate([0,0,4]) fill_linear(spacing=2.0,barWidth=3.0,minLength=20,minWidth=20, angle=60) {
    circle(r=10.0);
   }
-translate([0,0,6]) fill_linear(spacing=3.0,minLength=20,minWidth=20, angle=120) {
+translate([0,0,6]) fill_linear(spacing=3.0,barWidth=2.0,minLength=20,minWidth=20, angle=120) {
   circle(r=10.0);
  }
