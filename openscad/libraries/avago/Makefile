@@ -92,4 +92,5 @@ clean :
 	$(RM) shell.*.scad
 	$(RM) fill_mask.*.scad
 	$(RM) sliced_stl.scad
+	$(RM) .jobpool.*
 
