@@ -7,16 +7,23 @@ module bars(
 	, minWidth=10
 	, angle=0
 	) {
-  rotate([0,0,angle]) for ( ln = [0 : 
-	(minLength-(minLength)%(spacing+barWidth))/(spacing+barWidth)] ) {
-    translate([-minLength/2+ln*(spacing+barWidth)-(barWidth+spacing)*(minLength%2)/2-barWidth/2,-minWidth/2]) {
-      square(size=[barWidth,minWidth], center=false);
+  rotate([0,0,angle]) {
+	square(size=[barWidth,minWidth], center=true);
+    assign( barCount=(minLength-(minLength)%(spacing+barWidth))/(spacing+barWidth) ) {
+     for ( ln = [1 : 
+		(barCount-barCount%2)/2+1 ] ) {
+      translate([ln*(spacing+barWidth),0])
+        square(size=[barWidth,minWidth], center=true);
+      translate([-ln*(spacing+barWidth),0])
+        square(size=[barWidth,minWidth], center=true);
+     }
     }
   }
 }
 
 module fill_linear(
 	spacing=2.0
+	, barWidth=2.0
 	, minLength=100
 	, minWidth=100
 	, angle=0
@@ -24,7 +31,7 @@ module fill_linear(
   for ( i = [0 : $children-1] ) {
     intersection () {
       child(i);
-      bars(spacing=spacing,minLength=minLength,minWidth=minWidth,angle=angle);
+      bars(spacing=spacing,barWidth=barWidth,minLength=minLength,minWidth=minWidth,angle=angle);
     }
   }
 }
