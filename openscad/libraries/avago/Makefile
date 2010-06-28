@@ -1,5 +1,9 @@
 OPENSCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD
-JOBPOOL=/opt/local/bin/jobpool -j 2 
+# JOBPOOL=/opt/local/bin/jobpool -j 2 
+JOBPOOL=
+# SLICECOUNT=10
+# SLICECOUNT=2
+SLICECOUNT=1
 
 default : usage
 
@@ -16,6 +20,7 @@ usage :
 	@echo "  make sliced_slab"
 	@echo "  make sliced shelled"
 	@echo "  make sliced shelled fill_mask"
+	@echo "  make sliced shelled fill_mask fill_mask_linear"
 
 all : adns2610.stl adns2610_oc0.stl adns2610_pin_sockets.stl adns2610_dev_circuit.stl adns2610_dev_circuit_inv.stl
 
@@ -36,7 +41,7 @@ adns2610_dev_circuit_inv.stl :
 
 sliced :
 	i="0" ;\
-	while [ $$i -lt 10 ] ; do \
+	while [ $$i -lt $(SLICECOUNT) ] ; do \
 		echo " Slice "$$i"..." ;\
 		$(JOBPOOL) $(OPENSCAD) -D adns2610_render_part=7 -D slice_z_index=$$i -D slice_z_thickness=0.35 -x slice.$$i.dxf adns-2610.scad & \
 		i=$$[$$i+1] ;\
@@ -50,7 +55,7 @@ sliced_stl : adns2610_dev_circuit_inv.stl
 	echo "  import_stl("'"'"adns2610_dev_circuit_inv.stl"'"'");" >> sliced_stl.scad 
 	echo "}" >> sliced_stl.scad 
 	i="0" ;\
-	while [ $$i -lt 10 ] ; do \
+	while [ $$i -lt $(SLICECOUNT) ] ; do \
 		echo " Slice "$$i"..." ;\
 		$(JOBPOOL) $(OPENSCAD) -D adns2610_render_part=7 -D slice_z_index=$$i -D slice_z_thickness=0.35 -x sliced_stl.$$i.dxf sliced_stl.scad & \
 		i=$$[$$i+1] ;\
@@ -58,7 +63,7 @@ sliced_stl : adns2610_dev_circuit_inv.stl
 
 sliced_slab :
 	i="0" ;\
-	while [ $$i -lt 10 ] ; do \
+	while [ $$i -lt $(SLICECOUNT) ] ; do \
 		echo " Slice "$$i"..." ;\
 		$(JOBPOOL) $(OPENSCAD) -D adns2610_render_part=9 -D slice_z_index=$$i -D slice_z_thickness=0.35 -x slice_slab.$$i.dxf adns-2610.scad & \
 		i=$$[$$i+1] ;\
@@ -86,11 +91,26 @@ fill_mask :
 		echo "Done creating fill_mask.$$file." ; \
 		done
 
+fill_mask_linear :
+	for file in fill_mask.*.dxf ; do \
+		echo "Creating fill_linear.$$file..." ; \
+		echo "use <../../operations/fill.scad>" > fill_linear.$$file.scad ; \
+		echo "fillAngle=0;" >> fill_linear.$$file.scad ; \
+		echo "fill_linear(spacing=1.0, barWidth=1.0, angle=fillAngle) {" >> fill_linear.$$file.scad ; \
+		echo "  import_dxf("'"'"$$file"'"'");" >> fill_linear.$$file.scad ; \
+		echo "}" >> fill_linear.$$file.scad ; \
+		$(JOBPOOL) $(OPENSCAD) -x fill_linear.$$file fill_linear.$$file.scad & \
+		$(JOBPOOL) $(OPENSCAD) -D fillAngle=60 -x fill_linear.60.$$file fill_linear.$$file.scad & \
+		$(JOBPOOL) $(OPENSCAD) -D fillAngle=120 -x fill_linear.120.$$file fill_linear.$$file.scad & \
+		echo "Done creating fill_linear.$$file." ; \
+		done
+
 clean :
 	$(RM) *.stl
 	$(RM) *.dxf
 	$(RM) shell.*.scad
 	$(RM) fill_mask.*.scad
+	$(RM) fill_linear.*.scad
 	$(RM) sliced_stl.scad
 	$(RM) .jobpool.*
 

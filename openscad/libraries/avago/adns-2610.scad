@@ -14,12 +14,13 @@ use <../generic/pin_socket.scad>
 use <../tdk/fcr_m6.scad>
 // adns2610_render_part=5; // render adns2610 with pin sockets and ceramic resonator sockets.
 // adns2610_render_part=6; // render inverse adns2610 with pin sockets and ceramic resonator sockets.
-// adns2610_render_part=7; // render inverse adns2610 and slice.
+ adns2610_render_part=7; // render inverse adns2610 and slice.
 // adns2610_render_part=8; // render inverse adns2610, create shell and slice.
-adns2610_render_part=9; // render inverse adns2610 and slice_slab.
+// adns2610_render_part=9; // render inverse adns2610 and slice_slab.
 
-
-slice_z_index=0;
+max_z=10;
+slice_z_index=max_z*$t;
+// slice_z_index=8;
 slice_z_thickness=0.35;
 
 module adns2610_pin(
