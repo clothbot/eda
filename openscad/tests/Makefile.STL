@@ -7,6 +7,7 @@ usage :
 	@echo "  make all"
 	@echo "  make test_hollow_cube.stl"
 	@echo "  make test_complex_cube.stl"
+	@echo "  make test_diff_import_stl.stl"
 
 all : test_hollow_cube.stl test_complex_cube.stl
 
@@ -30,6 +31,16 @@ test_hollow_cube.stl : test_hollow_cube.scad
 
 test_complex_cube.stl : test_complex_cube.scad
 	$(OPENSCAD) -s test_complex_cube.stl test_complex_cube.scad
+
+test_diff_import_stl.scad : test_hollow_cube.stl
+	echo "difference() {" > test_diff_import_stl.scad
+	echo "  import_stl("'"'"test_hollow_cube.stl"'"'");" >> test_diff_import_stl.scad
+	echo "  cube(size=10.0,center=false);" >> test_diff_import_stl.scad
+	echo "}" >> test_diff_import_stl.scad
+
+test_diff_import_stl.stl : test_diff_import_stl.scad
+	$(OPENSCAD) -s test_diff_import_stl.stl test_diff_import_stl.scad
+
 clean :
 	$(RM) *.stl
 	$(RM) *.scad
