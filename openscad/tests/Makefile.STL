@@ -9,7 +9,7 @@ usage :
 	@echo "  make test_complex_cube.stl"
 	@echo "  make test_diff_import_stl.stl"
 
-all : test_hollow_cube.stl test_complex_cube.stl
+all : test_hollow_cube.stl test_complex_cube.stl test_diff_import_stl.stl
 
 test_hollow_cube.scad :
 	echo "difference() {" > test_hollow_cube.scad
