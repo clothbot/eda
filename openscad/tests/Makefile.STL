@@ -1,0 +1,36 @@
+OPENSCAD=/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD
+
+default : usage
+
+usage :
+	@echo "Usage:"
+	@echo "  make all"
+	@echo "  make test_hollow_cube.stl"
+	@echo "  make test_complex_cube.stl"
+
+all : test_hollow_cube_.stl test_complex_cube.stl
+
+test_hollow_cube.scad :
+	echo "difference() {" > test_hollow_cube.scad
+	echo "  cube(size=10.0,center=true);" >> test_hollow_cube.scad
+	echo "  cube(size=8.0,center=true);" >> test_hollow_cube.scad
+	echo "}" >> test_hollow_cube.scad
+
+test_complex_cube.scad :
+	echo "difference() {" > test_complex_cube.scad
+	echo " rotate([30,30,30]) difference() {" >> test_complex_cube.scad
+	echo "  cube(size=10.0,center=true);" >> test_complex_cube.scad
+	echo "  cube(size=8.0,center=true);" >> test_complex_cube.scad
+	echo " }" >> test_complex_cube.scad
+	echo " cube(size=10.0,center=false);" >> test_complex_cube.scad
+	echo "}" >> test_complex_cube.scad
+
+test_hollow_cube.stl : test_hollow_cube.scad
+	$(OPENSCAD) -s test_hollow_cube.stl test_hollow_cube.scad
+
+test_complex_cube.stl : test_complex_cube.scad
+	$(OPENSCAD) -s test_complex_cube.stl test_complex_cube.scad
+clean :
+	$(RM) *.stl
+	$(RM) *.scad
+

@@ -46,28 +46,13 @@ test_complex_cube_projection_true.dxf : test_complex_cube_projection.scad
 test_complex_cube_projection_false.dxf : test_complex_cube_projection.scad
 	$(OPENSCAD) -D projection_cut=false -x test_complex_cube_projection_false.dxf test_complex_cube_projection.scad
 
-test_hollow_cube_import.scad :
-	echo "difference() {" > test_hollow_cube_import.scad
-	echo "  cube(size=10.0,center=true);" >> test_hollow_cube_import.scad
-	echo "  cube(size=8.0,center=true);" >> test_hollow_cube_import.scad
-	echo "}" >> test_hollow_cube_import.scad
+test_hollow_cube.stl :
+	make -f Makefile.stl test_hollow_cube.stl
 
-test_complex_cube_import.scad :
-	echo "difference() {" > test_complex_cube_import.scad
-	echo " rotate([30,30,30]) difference() {" >> test_complex_cube_import.scad
-	echo "  cube(size=10.0,center=true);" >> test_complex_cube_import.scad
-	echo "  cube(size=8.0,center=true);" >> test_complex_cube_import.scad
-	echo " }" >> test_complex_cube_import.scad
-	echo " cube(size=10.0,center=false);" >> test_complex_cube_import.scad
-	echo "}" >> test_complex_cube_import.scad
-
-test_hollow_cube_import.stl : test_hollow_cube_import.scad
-	$(OPENSCAD) -s test_hollow_cube_import.stl test_hollow_cube_import.scad
-
-test_hollow_cube_import_projection.scad : test_hollow_cube_import.stl
+test_hollow_cube_import_projection.scad : test_hollow_cube.stl
 	echo "projection_cut=true;" > test_hollow_cube_import_projection.scad
 	echo "projection(cut=projection_cut)" >> test_hollow_cube_import_projection.scad
-	echo "  import_stl("'"'"test_hollow_cube_import.stl"'"'");" >> test_hollow_cube_import_projection.scad
+	echo "  import_stl("'"'"test_hollow_cube.stl"'"'");" >> test_hollow_cube_import_projection.scad
 
 test_hollow_cube_import_projection_true.dxf : test_hollow_cube_import_projection.scad
 	$(OPENSCAD) -D projection_cut=true -x test_hollow_cube_import_projection_true.dxf test_hollow_cube_import_projection.scad
@@ -75,13 +60,13 @@ test_hollow_cube_import_projection_true.dxf : test_hollow_cube_import_projection
 test_hollow_cube_import_projection_false.dxf : test_hollow_cube_import_projection.scad
 	$(OPENSCAD) -D projection_cut=false -x test_hollow_cube_import_projection_false.dxf test_hollow_cube_import_projection.scad
 
-test_complex_cube_import.stl : test_complex_cube_import.scad
-	$(OPENSCAD) -s test_complex_cube_import.stl test_complex_cube_import.scad
+test_complex_cube.stl :
+	make -f Makefile.stl test_complex_cube.stl
 
-test_complex_cube_import_projection.scad : test_complex_cube_import.stl
+test_complex_cube_import_projection.scad : test_complex_cube.stl
 	echo "projection_cut=true;" > test_complex_cube_import_projection.scad
 	echo "projection(cut=projection_cut)" >> test_complex_cube_import_projection.scad
-	echo "  import_stl("'"'"test_complex_cube_import.stl"'"'");" >> test_complex_cube_import_projection.scad
+	echo "  import_stl("'"'"test_complex_cube.stl"'"'");" >> test_complex_cube_import_projection.scad
 
 test_complex_cube_import_projection_true.dxf : test_complex_cube_import_projection.scad
 	$(OPENSCAD) -D projection_cut=true -x test_complex_cube_import_projection_true.dxf test_complex_cube_import_projection.scad
@@ -99,7 +84,6 @@ intersection_projection_true_diff.dxf : intersection_projection_true_diff.scad
 	$(OPENSCAD) -x intersection_projection_true_diff.dxf intersection_projection_true_diff.scad
 
 clean :
-	$(RM) *.stl
 	$(RM) *.scad
 	$(RM) *.dxf
 
