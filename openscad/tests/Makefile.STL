@@ -34,7 +34,7 @@ test_complex_cube.stl : test_complex_cube.scad
 
 test_diff_import_stl.scad : test_hollow_cube.stl
 	echo "difference() {" > test_diff_import_stl.scad
-	echo "  import_stl("'"'"test_hollow_cube.stl"'"'");" >> test_diff_import_stl.scad
+	echo "  import_stl("'"'"test_hollow_cube.stl"'"'",convexity=2);" >> test_diff_import_stl.scad
 	echo "  cube(size=10.0,center=false);" >> test_diff_import_stl.scad
 	echo "}" >> test_diff_import_stl.scad
 
@@ -42,6 +42,8 @@ test_diff_import_stl.stl : test_diff_import_stl.scad
 	$(OPENSCAD) -s test_diff_import_stl.stl test_diff_import_stl.scad
 
 clean :
-	$(RM) *.stl
+	$(RM) test_hollow_cube.stl
+	$(RM) test_complex_cube.stl
+	$(RM) test_diff_import_stl.stl
 	$(RM) *.scad
 
