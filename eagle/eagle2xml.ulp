@@ -362,8 +362,72 @@ if (board) board(B) {
   xmlprint_UL_AREA(" ",B.area);
   xmlprint_UL_GRID(" ",B.grid);
   printf(" <name>%s</name>\n", str2xml(B.name));
-  printf(" <sheets>\n");
-  printf("<board><eagle>\n");
+  printf(" <attributes>\n");
+  B.attributes(Attrib) {
+    xmlprint_UL_ATTRIBUTE("  ",Attrib);
+  }
+  printf(" </attributes>\n");
+  printf(" <circles>\n");
+  B.circles(Circle) {
+    xmlprint_UL_CIRCLE("  ",Circle);
+  }
+  printf(" </circles>\n");
+  printf(" <classes>\n");
+  B.classes(Class) {
+    xmlprint_UL_CLASS("  ",Class);
+  }
+  printf(" </classes>\n");
+  printf(" <elements>\n");
+  B.elements(Element) {
+    xmlprint_UL_ELEMENT("  ",Element);
+  }
+  printf(" </elements>\n");
+  printf(" <frames>\n");
+  B.frames(Frame) {
+    xmlprint_UL_FRAME("  ",Frame);
+  }
+  printf(" </frames>\n");
+  printf(" <holes>\n");
+  B.holes(Hole) {
+    xmlprint_UL_HOLE("  ",Hole);
+  }
+  printf(" </holes>\n");
+  printf(" <layers>\n");
+  B.layers(Layer) {
+    xmlprint_UL_LAYER("  ",Layer);
+  }
+  printf(" </layers>\n");
+  printf(" <libraries>\n");
+  B.libraries(Library) {
+    xmlprint_UL_LIBRARY("  ",Library);
+  }
+  printf(" </libraries>\n");
+  printf(" <polygons>\n");
+  B.polygons(Polygon) {
+    xmlprint_UL_POLYGON("  ",Polygon);
+  }
+  printf(" </polygons>\n");
+  printf(" <rectangles>\n");
+  B.rectangles(Rectangle) {
+    xmlprint_UL_RECTANGLE("  ",Rectangle);
+  }
+  printf(" </rectangles>\n");
+  printf(" <signals>\n");
+  B.signals(Signal) {
+    xmlprint_UL_SIGNAL("  ",Signal);
+  }
+  printf(" </signals>\n");
+  printf(" <texts>\n");
+  B.texts(Text) {
+    xmlprint_UL_TEXT("  ",Text);
+  }
+  printf(" </texts>\n");
+  printf(" <wires>\n");
+  B.wires(Wire) {
+    xmlprint_UL_WIRE("  ",Wire);
+  }
+  printf(" </wires>\n");
+  printf("</board></eagle>\n");
  }
 }
 
