@@ -39,6 +39,15 @@ void xmlprint_UL_AREA(string indentSpace, UL_AREA A) {
   printf("%s</area>\n", indentSpace);
 }
 
+void xmlprint_UL_CIRCLE(string indentSpace, UL_CIRCLE C) {
+  printf("%s<circle>\n", indentSpace);
+  printf("%s <layer>%d</layer>\n", indentSpace, C.layer);
+  printf("%s <radius>%d</radius>\n", indentSpace, C.radius);
+  printf("%s <width>%d</width>\n", indentSpace, C.width);
+  printf("%s <x>%d</x><y>%d</y>\n", indentSpace, C.x, C.y);
+  printf("%s</circle>\n", indentSpace);
+}
+
 void xmlprint_UL_CLASS(string indentSpace, UL_CLASS C) {
   printf("%s<class>\n", indentSpace);
   printf("%s <clearance>%d</clearance>\n", indentSpace, C.clearance);
@@ -293,6 +302,23 @@ void xmlprint_UL_SEGMENT(string indentSpace, UL_SEGMENT S) {
   }
   printf("%s </pinrefs>\n", indentSpace);
   printf("%s</segment>\n", indentSpace);
+}
+
+void xmlprint_UL_ELEMENT(string indentSpace, UL_ELEMENT E) {
+  printf("%s<element>\n", indentSpace);
+  printf("%s <angle>%g</angle>\n", indentSpace, E.angle);
+  printf("%s <attribute>%s</attribute>\n", indentSpace, E.attribute);
+  printf("%s <column>%s</column>\n", indentSpace, E.column);
+  printf("%s <locked>%d</locked>\n", indentSpace, E.locked);
+  printf("%s <mirror>%d</mirror>\n", indentSpace, E.mirror);
+  printf("%s <name>%s</name>\n", indentSpace, str2xml(E.name));
+  xmlprint_UL_PACKAGE(indentSpace+" ", E.package);
+  printf("%s <row>%s</row>\n", indentSpace, E.row);
+  printf("%s <smashed>%d</smashed>\n", indentSpace, E.smashed);
+  printf("%s <spin>%d</spin>\n", indentSpace, E.spin);
+  printf("%s <value>%s</value>\n", indentSpace, str2xml(E.value));
+  printf("%s <x>%d</x><y>%d</y>\n", indentSpace, E.x, E.y);
+  printf("%s</element>\n", indentSpace);
 }
 
 void xmlprint_UL_LIBRARY(string indentSpace, UL_LIBRARY L) {
