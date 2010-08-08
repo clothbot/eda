@@ -1,4 +1,8 @@
+// Global Variables
+
 string indentSpace="";
+
+// Functions
 
 string str2xml(string inString) {
   string outString="";
@@ -17,6 +21,8 @@ string str2xml(string inString) {
   }
   return( outString );
 }
+
+// Simple Functions
 
 void xmlprint_UL_ARC(string indentSpace, UL_ARC A) {
   printf("%s<arc>\n", indentSpace);
@@ -304,10 +310,60 @@ void xmlprint_UL_SEGMENT(string indentSpace, UL_SEGMENT S) {
   printf("%s</segment>\n", indentSpace);
 }
 
+void xmlprint_UL_PACKAGE(string indentSpace, UL_PACKAGE P) {
+  printf("%s<package>\n", indentSpace);
+  xmlprint_UL_AREA(indentSpace+" ", P.area);
+  printf("%s <description>%s</description>\n", indentSpace, str2xml(P.description) );
+  printf("%s <headline>%s</headline>\n", indentSpace, str2xml(P.headline) );
+  printf("%s <library>%s</library>\n", indentSpace, str2xml(P.library) );
+  printf("%s <name>%s</name>\n", indentSpace, str2xml(P.name) );
+  printf("%s <circles>\n", indentSpace);
+  P.circles(Circle) {
+    xmlprint_UL_CIRCLE(indentSpace+"  ", Circle);
+  }
+  printf("%s </circles>\n", indentSpace);
+  printf("%s <contacts>\n", indentSpace);
+  P.contacts(Contact) {
+    xmlprint_UL_CONTACT(indentSpace+"  ", Contact);
+  }
+  printf("%s </contacts>\n", indentSpace);
+  printf("%s <frames>\n", indentSpace);
+  P.frames(Frame) {
+    xmlprint_UL_FRAME(indentSpace+"  ", Frame);
+  }
+  printf("%s </frames>\n", indentSpace);
+  printf("%s <holes>\n", indentSpace);
+  P.holes(Hole) {
+    xmlprint_UL_HOLE(indentSpace+"  ", Hole);
+  }
+  printf("%s </holes>\n", indentSpace);
+  printf("%s <polygons>\n", indentSpace);
+  P.polygons(Polygon) {
+    xmlprint_UL_POLYGON(indentSpace+"  ", Polygon);
+  }
+  printf("%s </polygons>\n", indentSpace);
+  printf("%s <rectangles>\n", indentSpace);
+  P.rectangles(Rectangle) {
+    xmlprint_UL_RECTANGLE(indentSpace+"  ", Rectangle);
+  }
+  printf("%s </rectangles>\n", indentSpace);
+  printf("%s <texts>\n", indentSpace);
+  P.texts(Text) {
+    xmlprint_UL_TEXT(indentSpace+"  ", Text);
+  }
+  printf("%s </texts>\n", indentSpace);
+  printf("%s <wires>\n", indentSpace);
+  P.wires(Wire) {
+    xmlprint_UL_WIRE(indentSpace+"  ", Wire);
+  }
+  printf("%s </wires>\n", indentSpace);
+  printf("%s</package>\n", indentSpace);
+}
+
 void xmlprint_UL_ELEMENT(string indentSpace, UL_ELEMENT E) {
   printf("%s<element>\n", indentSpace);
   printf("%s <angle>%g</angle>\n", indentSpace, E.angle);
-  printf("%s <attribute>%s</attribute>\n", indentSpace, E.attribute);
+//  printf("%s <attribute>%s</attribute>\n", indentSpace, E.attribute);
   printf("%s <column>%s</column>\n", indentSpace, E.column);
   printf("%s <locked>%d</locked>\n", indentSpace, E.locked);
   printf("%s <mirror>%d</mirror>\n", indentSpace, E.mirror);
