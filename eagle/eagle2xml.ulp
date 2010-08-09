@@ -22,7 +22,7 @@ string str2xml(string inString) {
   return( outString );
 }
 
-// Simple Functions
+// Atomic Parts
 
 void xmlprint_UL_ARC(string indentSpace, UL_ARC A) {
   printf("%s<arc>\n", indentSpace);
@@ -199,6 +199,12 @@ void xmlprint_UL_LAYER(string indentSpace, UL_LAYER L) {
   printf("%s</layer>\n", indentSpace);
 }
 
+void xmlprint_UL_PAD(string indentSpace, UL_PAD P) {
+  printf("%s<pad>\n", indentSpace);
+  printf("%s <angle>%g</angle>\n", P.angle);
+  printf("%s</pad>\n", indentSpace);
+}
+
 void xmlprint_UL_PINREF(string indentSpace, UL_PINREF P) {
   printf("%s<pinref>\n", indentSpace);
   printf("%s  <part>%s</part>\n", indentSpace, str2xml(P.part.name));
@@ -206,6 +212,8 @@ void xmlprint_UL_PINREF(string indentSpace, UL_PINREF P) {
   printf("%s  <pin>%s</pin>\n",indentSpace,  str2xml(P.pin.name));
   printf("%s</pinref>\n", indentSpace);
 }
+
+// Dependent Parts; order matters
 
 void xmlprint_piece_UL_WIRE(string indentSpace, UL_WIRE W) {
   printf("%s<wire>\n", indentSpace);
@@ -309,6 +317,18 @@ void xmlprint_UL_SEGMENT(string indentSpace, UL_SEGMENT S) {
   printf("%s </pinrefs>\n", indentSpace);
   printf("%s</segment>\n", indentSpace);
 }
+
+void xmlprint_UL_CONTACT(string indentSpace, UL_CONTACT C) {
+  printf("%s<contact>\n", indentSpace);
+  printf("%s <name>%s</name>\n", indentSpace, str2xml(C.name) );
+  xmlprint_UL_PAD(indentSpace+" ", C.pad);
+  printf("%s <signal>%s</signal>\n", indentSpace, str2xml(C.signal) );
+  xmlprint_UL_SMD(indentSpace+" ", C.smd);
+  printf("%s <x>%d</x><y>%d</y>\n", indentSpace, C.x, C.y);
+  printf("%s</contact>\n", indentSpace);
+}
+
+// Top level parts
 
 void xmlprint_UL_PACKAGE(string indentSpace, UL_PACKAGE P) {
   printf("%s<package>\n", indentSpace);
