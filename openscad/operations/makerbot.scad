@@ -29,16 +29,20 @@ module draw_build_platform() {
 }
 
 module draw_quantized_model(draw_layer_thickness=layer_thickness,draw_layer_space=0.0) {
-  for (i = [0 : $children-1]) {
     for (k = [0 : calc_max_slice_index(layer_thickness,mb_cc_minz,mb_cc_maxz)-1]) {
       translate([0,0,mb_cc_minz+k*(draw_layer_thickness+draw_layer_space)]) linear_extrude(height=draw_layer_thickness,center=false) {
-	slicer(slice_z_index=k,slice_z_thickness=layer_thickness) {
+	  slicer(slice_z_index=k,slice_z_thickness=layer_thickness) {
 	    cylinder(r1=10,r2=0,h=10,center=false);
-	}
-      }
+//	   union () for (i = [0 : $children-1]) {
+//		child(i);
+//	   }
+	  }
+	 }
     }
-  }
 }
 
 color([0.7,0,0]) draw_build_platform();
-color([0,1.0,0]) draw_quantized_model(draw_layer_space=1.0);
+color([0,1.0,0]) draw_quantized_model(draw_layer_space=1.0) {
+	    cylinder(r1=10,r2=0,h=10,center=false);
+}
+
