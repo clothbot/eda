@@ -5,8 +5,9 @@ default : usage
 usage :
 	@echo "Usage:"
 	@echo "  make all"
+	@echo "  make clean"
 
-all : antlr.jar ExprParser.py ExprLexer.py Expr.tokens 
+all : antlr.jar ExprParser.py ExprLexer.py Expr.tokens Eval.tokens Eval.py
 
 antlr.jar :
 	wget http://antlr.org/download/antlr-3.1.3.jar
@@ -27,3 +28,8 @@ Eval.tokens : Eval.g Expr.tokens
 Eval.py : Eval.g ExprParser.py ExprLexer.py
 	$(ANTLR) Eval.g
 
+clean :
+	$(RM) *.pyc
+	$(RM) ExprParser.py ExprLexer.py Expr.tokens
+	$(RM) Eval.tokens
+	$(RM) Eval.py
