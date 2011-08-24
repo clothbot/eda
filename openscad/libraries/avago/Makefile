@@ -73,7 +73,7 @@ shelled :
 	for file in slice.*.dxf ; do \
 		echo "Creating shell.$$file..." ; \
 		echo "use <../../operations/shell.scad>" > shell.$$file.scad ; \
-		echo "shell_2D(shell_minWall=1.5*0.35) {" >> shell.$$file.scad ; \
+		echo "color([1.0,0,0]) shell_2D(shell_minWall=1.5*0.35) {" >> shell.$$file.scad ; \
 		echo "  import_dxf("'"'"$$file"'"'");" >> shell.$$file.scad ; \
 		echo "}" >> shell.$$file.scad ; \
 		$(JOBPOOL) $(OPENSCAD) -x shell.$$file shell.$$file.scad & \
