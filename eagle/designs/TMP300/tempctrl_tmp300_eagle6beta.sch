@@ -5022,7 +5022,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="R1" gate="G$1" x="48.26" y="144.78" rot="R90"/>
 <instance part="VTMP" gate="P" x="55.88" y="129.54"/>
 <instance part="VGND" gate="P" x="55.88" y="121.92"/>
-<instance part="GND7" gate="1" x="63.5" y="116.84"/>
+<instance part="GND7" gate="1" x="71.12" y="116.84"/>
 <instance part="PT1" gate="1" x="91.44" y="101.6"/>
 <instance part="PT3" gate="1" x="157.48" y="104.14" rot="R180"/>
 <instance part="PT5" gate="1" x="96.52" y="109.22"/>
@@ -5061,7 +5061,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <pinref part="GND3" gate="1" pin="GND"/>
 </segment>
 <segment>
-<wire x1="63.5" y1="121.92" x2="63.5" y2="119.38" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="121.92" x2="71.12" y2="119.38" width="0.1524" layer="91"/>
 <pinref part="GND7" gate="1" pin="GND"/>
 </segment>
 <segment>
