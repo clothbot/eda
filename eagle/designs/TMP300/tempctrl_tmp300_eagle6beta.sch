@@ -5044,7 +5044,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="P+3" gate="1" x="165.1" y="129.54"/>
 <instance part="P+4" gate="1" x="106.68" y="154.94"/>
 <instance part="VSS" gate="P" x="104.14" y="175.26" rot="R270"/>
-<instance part="SJ1" gate="1" x="53.34" y="88.9"/>
+<instance part="SJ1" gate="1" x="63.5" y="121.92"/>
 </instances>
 <busses>
 </busses>
@@ -5063,6 +5063,8 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <segment>
 <wire x1="71.12" y1="121.92" x2="71.12" y2="119.38" width="0.1524" layer="91"/>
 <pinref part="GND7" gate="1" pin="GND"/>
+<pinref part="SJ1" gate="1" pin="2"/>
+<wire x1="68.58" y1="121.92" x2="71.12" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <wire x1="132.08" y1="81.28" x2="132.08" y2="88.9" width="0.1524" layer="91"/>
@@ -5214,6 +5216,12 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <pinref part="LED1" gate="G$1" pin="C"/>
 <pinref part="Q1" gate="G$1" pin="D"/>
 <pinref part="RTN" gate="1" pin="P"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="VGND" gate="P" pin="P"/>
+<pinref part="SJ1" gate="1" pin="1"/>
 </segment>
 </net>
 </nets>
