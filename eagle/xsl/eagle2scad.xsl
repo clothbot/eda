@@ -3,6 +3,9 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="text"/>
 
+<xsl:param name="name_badchars"><xsl:text>',./-'</xsl:text></xsl:param>
+<xsl:param name="name_goodchars"><xsl:text>'pp__'</xsl:text></xsl:param>
+
 <xsl:template match="/">
 <xsl:text>// eagle2scad: begin
 </xsl:text>
@@ -108,9 +111,10 @@
 <xsl:text>// Entering board
 </xsl:text>
 <xsl:apply-templates select="libraries"/>
-<xsl:text>module board() {
+<xsl:text>module board(layer=0) {
 </xsl:text>
 <xsl:apply-templates select="plain"/>
+<xsl:apply-templates select="elements"/>
 <xsl:text>}
 </xsl:text>
 <xsl:text>// Exiting board
@@ -120,7 +124,42 @@
 <xsl:template match="libraries">
 <xsl:text>// Entering libraries
 </xsl:text>
+<xsl:apply-templates select="library"/>
 <xsl:text>// Exiting libraries
+</xsl:text>
+</xsl:template>
+
+<xsl:template match="library">
+<xsl:text>//Entering library
+</xsl:text>
+<xsl:for-each select="packages/package">
+<xsl:call-template name="module-package">
+<xsl:with-param name="library">
+<xsl:value-of select="translate(../../@name,$name_badchars,$name_goodchars)"/>
+</xsl:with-param>
+<xsl:with-param name="package" select="translate(@name,$name_badchars,$name_goodchars)"/>
+</xsl:call-template>
+</xsl:for-each>
+<xsl:text>// Exiting library
+</xsl:text>
+</xsl:template>
+
+<xsl:template name="module-package">
+<xsl:param name="library"/>
+<xsl:param name="package"/>
+<xsl:text>module </xsl:text><xsl:value-of select="$library"/><xsl:text>_</xsl:text><xsl:value-of select="$package"/><xsl:text>(layer=0) {
+</xsl:text>
+<xsl:for-each select="*">
+<xsl:choose>
+<xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
+<xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
+<xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
+<xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
+</xsl:text></xsl:otherwise>
+</xsl:choose>
+</xsl:for-each>
+<xsl:text>
+}
 </xsl:text>
 </xsl:template>
 
@@ -136,6 +175,42 @@
 </xsl:text></xsl:otherwise>
 </xsl:choose>
 </xsl:for-each>
+</xsl:template>
+
+<xsl:template match="elements">
+<xsl:for-each select="element">
+ <xsl:text>  translate([</xsl:text><xsl:value-of select="@x"/><xsl:text>,</xsl:text><xsl:value-of select="@y"/><xsl:text>])</xsl:text>
+ <xsl:choose>
+  <xsl:when test="@rot='R90'"><xsl:text> rotate(90)</xsl:text></xsl:when>
+  <xsl:when test="@rot='R180'"><xsl:text> rotate(180)</xsl:text></xsl:when>
+  <xsl:when test="@rot='R270'"><xsl:text> rotate(270)</xsl:text></xsl:when>
+ </xsl:choose>
+ <xsl:text> </xsl:text><xsl:value-of select="translate(@library,$name_badchars,$name_goodchars)"/><xsl:text>_</xsl:text>
+ <xsl:value-of select="translate(@package,$name_badchars,$name_goodchars)"/><xsl:text>(layer=layer</xsl:text>
+ <xsl:if test="@value"><xsl:text>, value="</xsl:text><xsl:value-of select="@value"/><xsl:text>"</xsl:text></xsl:if>
+ <xsl:if test="@smashed"><xsl:text>, smashed="</xsl:text><xsl:value-of select="@smashed"/><xsl:text>"</xsl:text></xsl:if>
+ <xsl:text>)</xsl:text>
+ <xsl:if test="count(attribute) &gt; 0">
+  <xsl:text> {
+</xsl:text>
+  <xsl:for-each select="attribute">
+    <xsl:call-template name="element-attribute"/>
+  </xsl:for-each>
+  <xsl:text> }
+</xsl:text>
+ </xsl:if>
+ <xsl:text>;
+ </xsl:text>
+</xsl:for-each>
+</xsl:template>
+
+<xsl:template name="element-attribute">
+<xsl:text>  // Attribute </xsl:text>
+<xsl:for-each select="@*">
+<xsl:text> </xsl:text><xsl:value-of select="name()"/><xsl:text>="</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text>
+</xsl:for-each>
+<xsl:text>
+</xsl:text>
 </xsl:template>
 
 <xsl:template name="wire">
@@ -154,8 +229,8 @@
 
 <xsl:template name="circle">
 <xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) translate([</xsl:text><xsl:value-of select="@x"/><xsl:text>,</xsl:text><xsl:value-of select="@y"/><xsl:text>]) difference() {
-  circle(r=</xsl:text><xsl:value-of select="@radius"/><xsl:text>+</xsl:text><xsl:value-of select="@width"/><xsl:text>/2);
-  circle(r=</xsl:text><xsl:value-of select="@radius"/><xsl:text>-</xsl:text><xsl:value-of select="@width"/><xsl:text>/2);
+  circle($fn=16,r=</xsl:text><xsl:value-of select="@radius"/><xsl:text>+</xsl:text><xsl:value-of select="@width"/><xsl:text>/2);
+  circle($fn=16,r=</xsl:text><xsl:value-of select="@radius"/><xsl:text>-</xsl:text><xsl:value-of select="@width"/><xsl:text>/2);
  }
 </xsl:text>
 </xsl:template>
