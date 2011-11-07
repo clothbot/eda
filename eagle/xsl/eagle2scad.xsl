@@ -154,6 +154,7 @@
 <xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
 <xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
 <xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
+<xsl:when test="name()='pad'"><xsl:call-template name="pad"/></xsl:when>
 <xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
 </xsl:text></xsl:otherwise>
 </xsl:choose>
@@ -187,6 +188,7 @@
  </xsl:choose>
  <xsl:text> </xsl:text><xsl:value-of select="translate(@library,$name_badchars,$name_goodchars)"/><xsl:text>_</xsl:text>
  <xsl:value-of select="translate(@package,$name_badchars,$name_goodchars)"/><xsl:text>(layer=layer</xsl:text>
+ <xsl:if test="@name"><xsl:text>, name="</xsl:text><xsl:value-of select="@name"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@value"><xsl:text>, value="</xsl:text><xsl:value-of select="@value"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@smashed"><xsl:text>, smashed="</xsl:text><xsl:value-of select="@smashed"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:text>)</xsl:text>
@@ -239,6 +241,19 @@
 <xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) {
   echo(" Text @ [</xsl:text><xsl:value-of select="@x"/><xsl:text>,</xsl:text><xsl:value-of select="@y"/><xsl:text>], size=</xsl:text><xsl:value-of select="@size"/><xsl:text>, font=\"</xsl:text><xsl:value-of select="@font"/><xsl:text>\", ratio=</xsl:text><xsl:value-of select="@ratio"/><xsl:text>:  </xsl:text><xsl:value-of select="normalize-space()"/><xsl:text>");
   translate([</xsl:text><xsl:value-of select="@x"/><xsl:text>,</xsl:text><xsl:value-of select="@y"/><xsl:text>]) square(size=[</xsl:text><xsl:value-of select="@size"/><xsl:text>,</xsl:text><xsl:value-of select="@size"/><xsl:text>],center=true);
+ }
+</xsl:text>
+</xsl:template>
+
+<xsl:template name="pad">
+<xsl:text> if(layer==</xsl:text><xsl:value-of select="/eagle/drawing/layers/layer[@name='Pads']/@number"/><xsl:text>) translate([</xsl:text><xsl:value-of select="@x"/><xsl:text>,</xsl:text><xsl:value-of select="@y"/><xsl:text>]) difference() {
+</xsl:text>
+<xsl:choose>
+  <xsl:when test="@shape='octagon'"><xsl:text>rotate(22.5) circle($fn=8</xsl:text></xsl:when>
+  <xsl:otherwise><xsl:text>circle($fn=16</xsl:text></xsl:otherwise>
+</xsl:choose>
+<xsl:text>,r=</xsl:text><xsl:value-of select="@diameter"/><xsl:text>/2);
+  circle($fn=16,r=</xsl:text><xsl:value-of select="@drill"/><xsl:text>);
  }
 </xsl:text>
 </xsl:template>
