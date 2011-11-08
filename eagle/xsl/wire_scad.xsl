@@ -14,4 +14,20 @@
 }
 </xsl:text>
 </xsl:template>
+
+<xsl:template name="wire">
+<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) wire(</xsl:text>
+<xsl:for-each select="@*">
+<xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
+<xsl:value-of select="name()"/><xsl:text>=</xsl:text>
+<xsl:choose>
+<xsl:when test="name()='extent'"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:when>
+<xsl:when test="name()='cap'"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:when>
+<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+</xsl:choose>
+</xsl:for-each>
+<xsl:text>);
+</xsl:text>
+</xsl:template>
+
 </xsl:stylesheet>

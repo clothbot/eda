@@ -8,12 +8,16 @@
 
 <xsl:include href="wire_scad.xsl"/>
 <xsl:include href="text_scad.xsl"/>
+<xsl:include href="pad_scad.xsl"/>
 
 <xsl:template match="/">
-<xsl:text>// eagle2scad: begin
+<xsl:text>// OpenSCAD Definitions
 </xsl:text>
 <xsl:call-template name="wire-scad"/>
 <xsl:call-template name="text-scad"/>
+<xsl:call-template name="pad-scad"/>
+<xsl:text>// eagle2scad: begin
+</xsl:text>
 <xsl:apply-templates select="eagle"/>
 <xsl:text>// eagle2scad: end
 </xsl:text>
@@ -220,52 +224,10 @@
 </xsl:text>
 </xsl:template>
 
-<xsl:template name="wire">
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) wire(</xsl:text>
-<xsl:for-each select="@*">
-<xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
-<xsl:value-of select="name()"/><xsl:text>=</xsl:text>
-<xsl:choose>
-<xsl:when test="name()='extent'"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:when>
-<xsl:when test="name()='cap'"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:when>
-<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
-</xsl:choose>
-</xsl:for-each>
-<xsl:text>);
-</xsl:text>
-</xsl:template>
-
 <xsl:template name="circle">
 <xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) translate([</xsl:text><xsl:value-of select="@x"/><xsl:text>,</xsl:text><xsl:value-of select="@y"/><xsl:text>]) difference() {
   circle($fn=16,r=</xsl:text><xsl:value-of select="@radius"/><xsl:text>+</xsl:text><xsl:value-of select="@width"/><xsl:text>/2);
   circle($fn=16,r=</xsl:text><xsl:value-of select="@radius"/><xsl:text>-</xsl:text><xsl:value-of select="@width"/><xsl:text>/2);
- }
-</xsl:text>
-</xsl:template>
-
-<xsl:template name="text">
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) text(</xsl:text>
-<xsl:for-each select="@*">
-<xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
-<xsl:value-of select="name()"/><xsl:text>=</xsl:text>
-<xsl:choose>
-<xsl:when test="name()='font'"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:when>
-<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
-</xsl:choose>
-</xsl:for-each>
-<xsl:text>,text_string="</xsl:text><xsl:value-of select="normalize-space()"/><xsl:text>");
-</xsl:text>
-</xsl:template>
-
-<xsl:template name="pad">
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="/eagle/drawing/layers/layer[@name='Pads']/@number"/><xsl:text>) translate([</xsl:text><xsl:value-of select="@x"/><xsl:text>,</xsl:text><xsl:value-of select="@y"/><xsl:text>]) difference() {
-</xsl:text>
-<xsl:choose>
-  <xsl:when test="@shape='octagon'"><xsl:text>rotate(22.5) circle($fn=8</xsl:text></xsl:when>
-  <xsl:otherwise><xsl:text>circle($fn=16</xsl:text></xsl:otherwise>
-</xsl:choose>
-<xsl:text>,r=</xsl:text><xsl:value-of select="@diameter"/><xsl:text>/2);
-  circle($fn=16,r=</xsl:text><xsl:value-of select="@drill"/><xsl:text>);
  }
 </xsl:text>
 </xsl:template>
