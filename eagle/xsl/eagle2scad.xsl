@@ -10,6 +10,7 @@
 <xsl:include href="text_scad.xsl"/>
 <xsl:include href="pad_scad.xsl"/>
 <xsl:include href="circle_scad.xsl"/>
+<xsl:include href="rectangle_scad.xsl"/>
 
 <xsl:template match="/">
 <xsl:text>// OpenSCAD Definitions
@@ -18,6 +19,7 @@
 <xsl:call-template name="text-scad"/>
 <xsl:call-template name="pad-scad"/>
 <xsl:call-template name="circle-scad"/>
+<xsl:call-template name="rectangle-scad"/>
 <xsl:text>// eagle2scad: begin
 </xsl:text>
 <xsl:apply-templates select="eagle"/>
@@ -126,6 +128,7 @@
 </xsl:text>
 <xsl:apply-templates select="plain"/>
 <xsl:apply-templates select="elements"/>
+<xsl:apply-templates select="signals"/>
 <xsl:text>}
 </xsl:text>
 <xsl:text>// Exiting board
@@ -165,6 +168,7 @@
 <xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
 <xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
 <xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
+<xsl:when test="name()='rectangle'"><xsl:call-template name="rectangle"/></xsl:when>
 <xsl:when test="name()='pad'"><xsl:call-template name="pad"/></xsl:when>
 <xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
 </xsl:text></xsl:otherwise>
@@ -224,6 +228,23 @@
 </xsl:for-each>
 <xsl:text>
 </xsl:text>
+</xsl:template>
+
+<xsl:template match="signals">
+<xsl:for-each select="signal">
+  <xsl:text>// Signal "</xsl:text><xsl:value-of select="@name"/><xsl:text>
+</xsl:text>
+<xsl:for-each select="./*">
+<xsl:choose>
+<xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
+<xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
+<xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
+<xsl:when test="name()='rectangle'"><xsl:call-template name="rectangle"/></xsl:when>
+<xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
+</xsl:text></xsl:otherwise>
+</xsl:choose>
+</xsl:for-each>
+</xsl:for-each>
 </xsl:template>
 
 </xsl:stylesheet>
