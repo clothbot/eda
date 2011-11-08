@@ -9,6 +9,7 @@
 <xsl:include href="wire_scad.xsl"/>
 <xsl:include href="text_scad.xsl"/>
 <xsl:include href="pad_scad.xsl"/>
+<xsl:include href="circle_scad.xsl"/>
 
 <xsl:template match="/">
 <xsl:text>// OpenSCAD Definitions
@@ -16,6 +17,7 @@
 <xsl:call-template name="wire-scad"/>
 <xsl:call-template name="text-scad"/>
 <xsl:call-template name="pad-scad"/>
+<xsl:call-template name="circle-scad"/>
 <xsl:text>// eagle2scad: begin
 </xsl:text>
 <xsl:apply-templates select="eagle"/>
@@ -221,14 +223,6 @@
 <xsl:text> </xsl:text><xsl:value-of select="name()"/><xsl:text>="</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text>
 </xsl:for-each>
 <xsl:text>
-</xsl:text>
-</xsl:template>
-
-<xsl:template name="circle">
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) translate([</xsl:text><xsl:value-of select="@x"/><xsl:text>,</xsl:text><xsl:value-of select="@y"/><xsl:text>]) difference() {
-  circle($fn=16,r=</xsl:text><xsl:value-of select="@radius"/><xsl:text>+</xsl:text><xsl:value-of select="@width"/><xsl:text>/2);
-  circle($fn=16,r=</xsl:text><xsl:value-of select="@radius"/><xsl:text>-</xsl:text><xsl:value-of select="@width"/><xsl:text>/2);
- }
 </xsl:text>
 </xsl:template>
 
