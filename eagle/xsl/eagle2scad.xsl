@@ -6,9 +6,12 @@
 <xsl:param name="name_badchars"><xsl:text>',./-'</xsl:text></xsl:param>
 <xsl:param name="name_goodchars"><xsl:text>'pp__'</xsl:text></xsl:param>
 
+<xsl:include href="wire_scad.xsl"/>
+
 <xsl:template match="/">
 <xsl:text>// eagle2scad: begin
 </xsl:text>
+<xsl:call-template name="wire-scad"/>
 <xsl:apply-templates select="eagle"/>
 <xsl:text>// eagle2scad: end
 </xsl:text>
@@ -216,16 +219,14 @@
 </xsl:template>
 
 <xsl:template name="wire">
-<xsl:variable name="xd"><xsl:text>(</xsl:text><xsl:value-of select="@x2"/><xsl:text>-</xsl:text><xsl:value-of select="@x1"/><xsl:text>)</xsl:text></xsl:variable>
-<xsl:variable name="yd"><xsl:text>(</xsl:text><xsl:value-of select="@y2"/><xsl:text>-</xsl:text><xsl:value-of select="@y1"/><xsl:text>)</xsl:text></xsl:variable>
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) assign(yd=</xsl:text><xsl:value-of select="$yd"/><xsl:text>, xd=</xsl:text>
-<xsl:value-of select="$xd"/><xsl:text>, angle=atan2(</xsl:text><xsl:value-of select="$yd"/><xsl:text>,</xsl:text><xsl:value-of select="$xd"/><xsl:text>), length=sqrt(pow(</xsl:text><xsl:value-of select="$xd"/><xsl:text>,2)+pow(</xsl:text><xsl:value-of select="$yd"/><xsl:text>,2)), width=max(grid_distance/10,</xsl:text>
-<xsl:value-of select="@width"/><xsl:text>) ) {
-</xsl:text>
-<xsl:text> translate([</xsl:text><xsl:value-of select="@x1"/><xsl:text>+xd/2,</xsl:text><xsl:value-of select="@y1"/><xsl:text>+yd/2])</xsl:text>
-<xsl:text> rotate(angle)</xsl:text>
-<xsl:text> square(size=[length,width],center=true);
-}
+<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) wire(x1=</xsl:text><xsl:value-of select="@x1"/>
+<xsl:text>,y1=</xsl:text><xsl:value-of select="@y1"/>
+<xsl:text>,x2=</xsl:text><xsl:value-of select="@x2"/>
+<xsl:text>,y2=</xsl:text><xsl:value-of select="@y2"/>
+<xsl:text>,width=</xsl:text><xsl:value-of select="@width"/>
+<xsl:text>,layer=</xsl:text><xsl:value-of select="@layer"/>
+<xsl:text>,extent="</xsl:text><xsl:value-of select="@extent"/><xsl:text>"</xsl:text>
+<xsl:text>);
 </xsl:text>
 </xsl:template>
 
