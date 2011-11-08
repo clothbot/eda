@@ -14,6 +14,14 @@
 <xsl:include href="smd_scad.xsl"/>
 
 <xsl:template match="/">
+<xsl:text>// Render layer variable
+render_layer=0;
+render_holes="yes"; // render_holes={"yes"|"no"|"only"};
+if(render_layer!=0) {
+  echo("Rendering layer: ",render_layer);
+  board(layer=render_layer);
+}
+</xsl:text>
 <xsl:text>// OpenSCAD Definitions
 </xsl:text>
 <xsl:call-template name="wire-scad"/>
@@ -47,13 +55,13 @@
 <xsl:for-each select="layers/layer">
 <xsl:choose>
 <xsl:when test="@visible='yes'">
-<xsl:text>  echo("Rendering layer </xsl:text><xsl:value-of select="@number"/><xsl:text> (</xsl:text><xsl:value-of select="@name"/><xsl:text>)");
+<xsl:text>  if(render_layer==0) echo("Rendering layer </xsl:text><xsl:value-of select="@number"/><xsl:text> (</xsl:text><xsl:value-of select="@name"/><xsl:text>)");
 </xsl:text>
-<xsl:text>  board(layer=</xsl:text><xsl:value-of select="@number"/><xsl:text>);
+<xsl:text>  if(render_layer==0) board(layer=</xsl:text><xsl:value-of select="@number"/><xsl:text>);
 </xsl:text>
 </xsl:when>
 <xsl:otherwise>
-<xsl:text>  echo("Not rendering layer </xsl:text><xsl:value-of select="@number"/><xsl:text> (</xsl:text><xsl:value-of select="@name"/><xsl:text>)");
+<xsl:text>  if(render_layer==0) echo("Not rendering layer </xsl:text><xsl:value-of select="@number"/><xsl:text> (</xsl:text><xsl:value-of select="@name"/><xsl:text>)");
 </xsl:text>
 <xsl:text>  // board(layer=</xsl:text><xsl:value-of select="@number"/><xsl:text>);
 </xsl:text>

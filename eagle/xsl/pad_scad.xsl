@@ -4,7 +4,7 @@
 <xsl:output method="text"/>
 
 <xsl:template name="pad-scad">
-<xsl:text>module pad(x,y,shape="",diameter,drill,layer=0,holes="yes") {
+<xsl:text>module pad(x,y,shape="",diameter,drill,layer=0,holes=render_holes) {
   if(holes=="only") {
     circle($fn=16,r=drill/2);
   } else {
