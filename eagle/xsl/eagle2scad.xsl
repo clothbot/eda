@@ -7,11 +7,13 @@
 <xsl:param name="name_goodchars"><xsl:text>'pp__'</xsl:text></xsl:param>
 
 <xsl:include href="wire_scad.xsl"/>
+<xsl:include href="text_scad.xsl"/>
 
 <xsl:template match="/">
 <xsl:text>// eagle2scad: begin
 </xsl:text>
 <xsl:call-template name="wire-scad"/>
+<xsl:call-template name="text-scad"/>
 <xsl:apply-templates select="eagle"/>
 <xsl:text>// eagle2scad: end
 </xsl:text>
@@ -219,13 +221,16 @@
 </xsl:template>
 
 <xsl:template name="wire">
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) wire(x1=</xsl:text><xsl:value-of select="@x1"/>
-<xsl:text>,y1=</xsl:text><xsl:value-of select="@y1"/>
-<xsl:text>,x2=</xsl:text><xsl:value-of select="@x2"/>
-<xsl:text>,y2=</xsl:text><xsl:value-of select="@y2"/>
-<xsl:text>,width=</xsl:text><xsl:value-of select="@width"/>
-<xsl:text>,layer=</xsl:text><xsl:value-of select="@layer"/>
-<xsl:text>,extent="</xsl:text><xsl:value-of select="@extent"/><xsl:text>"</xsl:text>
+<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) wire(</xsl:text>
+<xsl:for-each select="@*">
+<xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
+<xsl:value-of select="name()"/><xsl:text>=</xsl:text>
+<xsl:choose>
+<xsl:when test="name()='extent'"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:when>
+<xsl:when test="name()='cap'"><xsl:text>"</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text></xsl:when>
+<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+</xsl:choose>
+</xsl:for-each>
 <xsl:text>);
 </xsl:text>
 </xsl:template>
