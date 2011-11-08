@@ -10,7 +10,11 @@
   angle=atan2(yd,xd);
   length=sqrt(pow(xd,2)+pow(yd,2));
   width=max(grid_distance/10,width);
-  translate([x1+xd/2,y1+yd/2]) rotate(angle) square(size=[length,width],center=true);
+  translate([x1+xd/2,y1+yd/2]) rotate(angle) union() {
+    translate([-length/2,0]) circle($fn=8,r=width/2);
+    square(size=[length,width],center=true);
+    translate([length/2,0]) circle($fn=8,r=width/2);
+  }
 }
 </xsl:text>
 </xsl:template>
