@@ -11,6 +11,7 @@
 <xsl:include href="pad_scad.xsl"/>
 <xsl:include href="circle_scad.xsl"/>
 <xsl:include href="rectangle_scad.xsl"/>
+<xsl:include href="smd_scad.xsl"/>
 
 <xsl:template match="/">
 <xsl:text>// OpenSCAD Definitions
@@ -20,6 +21,7 @@
 <xsl:call-template name="pad-scad"/>
 <xsl:call-template name="circle-scad"/>
 <xsl:call-template name="rectangle-scad"/>
+<xsl:call-template name="smd-scad"/>
 <xsl:text>// eagle2scad: begin
 </xsl:text>
 <xsl:apply-templates select="eagle"/>
@@ -170,6 +172,7 @@
 <xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
 <xsl:when test="name()='rectangle'"><xsl:call-template name="rectangle"/></xsl:when>
 <xsl:when test="name()='pad'"><xsl:call-template name="pad"/></xsl:when>
+<xsl:when test="name()='smd'"><xsl:call-template name="smd"/></xsl:when>
 <xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
 </xsl:text></xsl:otherwise>
 </xsl:choose>

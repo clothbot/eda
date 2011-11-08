@@ -4,14 +4,18 @@
 <xsl:output method="text"/>
 
 <xsl:template name="pad-scad">
-<xsl:text>module pad(x,y,shape="",diameter,drill,layer=0) {
-  translate([x,y]) difference() {
-    if(shape=="octagon") {
-      rotate(22.5) circle($fn=8,r=diameter/2);
-    } else {
-      circle($fn=16,r=diameter/2);
+<xsl:text>module pad(x,y,shape="",diameter,drill,layer=0,holes="yes") {
+  if(holes=="only") {
+    circle($fn=16,r=drill/2);
+  } else {
+    translate([x,y]) difference() {
+      if(shape=="octagon") {
+        rotate(22.5) circle($fn=8,r=diameter/2);
+      } else {
+        circle($fn=16,r=diameter/2);
+      }
+      if(holes=="yes") circle($fn=16,r=drill/2);
     }
-    circle($fn=16,r=drill);
   }
 }
 </xsl:text>
