@@ -19,6 +19,8 @@
 <xsl:include href="package_scad.xsl"/>
 <xsl:include href="signal_scad.xsl"/>
 
+<xsl:include href="render3d_scad.xsl"/>
+
 <xsl:template match="/">
 <xsl:text>// Render layer variable
 render_layer=0;
@@ -30,6 +32,7 @@ if(render_layer!=0) {
 </xsl:text>
 <xsl:text>// OpenSCAD Definitions
 </xsl:text>
+<xsl:call-template name="render3d-scad"/>
 <xsl:call-template name="wire-scad"/>
 <xsl:call-template name="text-scad"/>
 <xsl:call-template name="pad-scad"/>
@@ -52,6 +55,7 @@ if(render_layer!=0) {
 <xsl:apply-templates select="drawing"/>
 <xsl:text>// Exiting eagle
 </xsl:text>
+<xsl:call-template name="render3d"/>
 </xsl:template>
 
 <xsl:template match="drawing">
@@ -61,22 +65,6 @@ if(render_layer!=0) {
 <xsl:apply-templates select="grid"/>
 <xsl:apply-templates select="layers"/>
 <xsl:apply-templates select="board"/>
-<xsl:for-each select="layers/layer">
-<xsl:choose>
-<xsl:when test="@visible='yes'">
-<xsl:text>  if(render_layer==0) echo("Rendering layer </xsl:text><xsl:value-of select="@number"/><xsl:text> (</xsl:text><xsl:value-of select="@name"/><xsl:text>)");
-</xsl:text>
-<xsl:text>  if(render_layer==0) board(layer=</xsl:text><xsl:value-of select="@number"/><xsl:text>);
-</xsl:text>
-</xsl:when>
-<xsl:otherwise>
-<xsl:text>  if(render_layer==0) echo("Not rendering layer </xsl:text><xsl:value-of select="@number"/><xsl:text> (</xsl:text><xsl:value-of select="@name"/><xsl:text>)");
-</xsl:text>
-<xsl:text>  // board(layer=</xsl:text><xsl:value-of select="@number"/><xsl:text>);
-</xsl:text>
-</xsl:otherwise>
-</xsl:choose>
-</xsl:for-each>
 </xsl:template>
 
 <xsl:template match="settings">
