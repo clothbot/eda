@@ -15,6 +15,7 @@
 <xsl:include href="via_scad.xsl"/>
 <xsl:include href="polygon_scad.xsl"/>
 
+<xsl:include href="board_scad.xsl"/>
 <xsl:include href="package_scad.xsl"/>
 <xsl:include href="signal_scad.xsl"/>
 
@@ -37,6 +38,7 @@ if(render_layer!=0) {
 <xsl:call-template name="smd-scad"/>
 <xsl:call-template name="via-scad"/>
 <xsl:call-template name="polygon-scad"/>
+<xsl:call-template name="board-scad"/>
 <xsl:text>// eagle2scad: begin
 </xsl:text>
 <xsl:apply-templates select="eagle"/>
@@ -134,28 +136,6 @@ if(render_layer!=0) {
 <xsl:text>  layer_</xsl:text><xsl:value-of select="@number"/><xsl:text>_visible="</xsl:text><xsl:value-of select="@visible"/><xsl:text>";
 </xsl:text>
 <xsl:text>  layer_</xsl:text><xsl:value-of select="@number"/><xsl:text>_active="</xsl:text><xsl:value-of select="@active"/><xsl:text>";
-</xsl:text>
-</xsl:template>
-
-<xsl:template match="board">
-<xsl:text>// Entering board
-</xsl:text>
-<xsl:apply-templates select="libraries"/>
-<xsl:for-each select="signals/signal">
-<xsl:call-template name="signal-scad">
-<xsl:with-param name="name">
-<xsl:value-of select="translate(./@name,$name_badchars,$name_goodchars)"/>
-</xsl:with-param>
-</xsl:call-template>
-</xsl:for-each>
-<xsl:text>module board(layer=0) {
-</xsl:text>
-<xsl:apply-templates select="plain"/>
-<xsl:apply-templates select="elements"/>
-<xsl:apply-templates select="signals"/>
-<xsl:text>}
-</xsl:text>
-<xsl:text>// Exiting board
 </xsl:text>
 </xsl:template>
 
