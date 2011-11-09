@@ -49,7 +49,7 @@ module shell_spherical(wall_th=2.0
     for(k=[0:$children-1]) for(i=[0:rot_res-1]) for(j=[0:polar_res-1]) assign(rotAngle=360*i/rot_res, polarAngle=180*j/polar_res-90) {
       render() difference() {
 	child(k);
-	translate([-wall_th*sin(polarAngle)*cos(rotAngle),-wall_th*sin(polarAngle)*cos(rotAngle),-wall_th*cos(polarAngle)]) child(k);
+	translate([-wall_th*sin(polarAngle)*cos(rotAngle),-wall_th*sin(polarAngle)*sin(rotAngle),-wall_th*cos(polarAngle)]) child(k);
       }
     }
   }
