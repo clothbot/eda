@@ -205,7 +205,7 @@ if(render_layer!=0) {
   <xsl:when test="@rot='R180'"><xsl:text> rotate(180)</xsl:text></xsl:when>
   <xsl:when test="@rot='R270'"><xsl:text> rotate(270)</xsl:text></xsl:when>
  </xsl:choose>
- <xsl:text> </xsl:text><xsl:value-of select="translate(@library,$name_badchars,$name_goodchars)"/><xsl:text>_</xsl:text>
+ <xsl:text> </xsl:text>package_<xsl:value-of select="translate(@library,$name_badchars,$name_goodchars)"/><xsl:text>_</xsl:text>
  <xsl:value-of select="translate(@package,$name_badchars,$name_goodchars)"/><xsl:text>(layer=layer</xsl:text>
  <xsl:if test="@name"><xsl:text>, name="</xsl:text><xsl:value-of select="@name"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@value"><xsl:text>, value="</xsl:text><xsl:value-of select="@value"/><xsl:text>"</xsl:text></xsl:if>
@@ -237,19 +237,8 @@ if(render_layer!=0) {
 <xsl:template match="signals">
 <xsl:for-each select="signal">
   <xsl:text>// Signal "</xsl:text><xsl:value-of select="@name"/><xsl:text>
+  signal_</xsl:text><xsl:value-of select="translate(./@name,$name_badchars,$name_goodchars)"/><xsl:text>(layer=layer);
 </xsl:text>
-<xsl:for-each select="./*">
-<xsl:choose>
-<xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
-<xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
-<xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
-<xsl:when test="name()='rectangle'"><xsl:call-template name="rectangle"/></xsl:when>
-<xsl:when test="name()='polygon'"><xsl:call-template name="polygon"/></xsl:when>
-<xsl:when test="name()='via'"><xsl:call-template name="via"/></xsl:when>
-<xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
-</xsl:text></xsl:otherwise>
-</xsl:choose>
-</xsl:for-each>
 </xsl:for-each>
 </xsl:template>
 
