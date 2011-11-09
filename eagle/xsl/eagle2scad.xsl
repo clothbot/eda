@@ -3,8 +3,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="text"/>
 
-<xsl:param name="name_badchars"><xsl:text>',./-'</xsl:text></xsl:param>
-<xsl:param name="name_goodchars"><xsl:text>'pp__'</xsl:text></xsl:param>
+<xsl:param name="name_badchars"><xsl:text>',./-$+'</xsl:text></xsl:param>
+<xsl:param name="name_goodchars"><xsl:text>'ppm__p'</xsl:text></xsl:param>
 
 <xsl:include href="wire_scad.xsl"/>
 <xsl:include href="text_scad.xsl"/>
@@ -141,6 +141,13 @@ if(render_layer!=0) {
 <xsl:text>// Entering board
 </xsl:text>
 <xsl:apply-templates select="libraries"/>
+<xsl:for-each select="signals/signal">
+<xsl:call-template name="signal-scad">
+<xsl:with-param name="name">
+<xsl:value-of select="translate(./@name,$name_badchars,$name_goodchars)"/>
+</xsl:with-param>
+</xsl:call-template>
+</xsl:for-each>
 <xsl:text>module board(layer=0) {
 </xsl:text>
 <xsl:apply-templates select="plain"/>
