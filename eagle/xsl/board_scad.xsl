@@ -4,7 +4,7 @@
 <xsl:output method="text"/>
 
 <xsl:template name="board-scad">
-<xsl:text>module board(layer=0) {
+<xsl:text>module board(layer=0,holes=render_holes,fill=false) {
 </xsl:text>
 <xsl:apply-templates select="plain"/>
 <xsl:apply-templates select="elements"/>

@@ -4,11 +4,15 @@
 <xsl:output method="text"/>
 
 <xsl:template name="circle-scad">
-<xsl:text>module eagle_circle(x,y,radius,width,layer=0) {
+<xsl:text>module eagle_circle(x,y,radius,width,layer=0,fill=false) {
   width=max(grid_distance/10,width);
-  translate([x,y]) difference() {
-    circle($fn=16,r=radius+width/2);
-    circle($fn=16,r=radius-width/2);
+  if(fill) {
+    translate([x,y]) circle($fn=16,r=radius);
+  } else {
+    translate([x,y]) difference() {
+      circle($fn=16,r=radius+width/2);
+      circle($fn=16,r=radius-width/2);
+    }
   }
 }
 </xsl:text>

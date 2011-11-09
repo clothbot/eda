@@ -6,14 +6,15 @@
 <xsl:param name="name_badchars"><xsl:text>',./-$+'</xsl:text></xsl:param>
 <xsl:param name="name_goodchars"><xsl:text>'ppm__p'</xsl:text></xsl:param>
 
-<xsl:include href="wire_scad.xsl"/>
-<xsl:include href="text_scad.xsl"/>
-<xsl:include href="pad_scad.xsl"/>
 <xsl:include href="circle_scad.xsl"/>
+<xsl:include href="hole_scad.xsl"/>
+<xsl:include href="pad_scad.xsl"/>
+<xsl:include href="polygon_scad.xsl"/>
 <xsl:include href="rectangle_scad.xsl"/>
 <xsl:include href="smd_scad.xsl"/>
+<xsl:include href="text_scad.xsl"/>
 <xsl:include href="via_scad.xsl"/>
-<xsl:include href="polygon_scad.xsl"/>
+<xsl:include href="wire_scad.xsl"/>
 
 <xsl:include href="board_scad.xsl"/>
 <xsl:include href="package_scad.xsl"/>
@@ -25,9 +26,10 @@
 <xsl:text>// Render layer variable
 render_layer=0;
 render_holes="yes"; // render_holes={"yes"|"no"|"only"};
+render_fill=false; // render_fill={true|false};
 if(render_layer!=0) {
   echo("Rendering layer: ",render_layer);
-  board(layer=render_layer);
+  board(layer=render_layer,fill=render_fill);
 }
 </xsl:text>
 <xsl:text>// OpenSCAD Definitions
@@ -37,6 +39,7 @@ if(render_layer!=0) {
 <xsl:call-template name="text-scad"/>
 <xsl:call-template name="pad-scad"/>
 <xsl:call-template name="circle-scad"/>
+<xsl:call-template name="hole-scad"/>
 <xsl:call-template name="rectangle-scad"/>
 <xsl:call-template name="smd-scad"/>
 <xsl:call-template name="via-scad"/>
@@ -156,9 +159,9 @@ if(render_layer!=0) {
 </xsl:text>
 <xsl:for-each select="*">
 <xsl:choose>
-<xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
 <xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
 <xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
+<xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
 <xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
 </xsl:text></xsl:otherwise>
 </xsl:choose>
@@ -178,7 +181,7 @@ if(render_layer!=0) {
  <xsl:if test="@name"><xsl:text>, name="</xsl:text><xsl:value-of select="@name"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@value"><xsl:text>, value="</xsl:text><xsl:value-of select="@value"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@smashed"><xsl:text>, smashed="</xsl:text><xsl:value-of select="@smashed"/><xsl:text>"</xsl:text></xsl:if>
- <xsl:text>)</xsl:text>
+ <xsl:text>,holes=holes)</xsl:text>
  <xsl:if test="count(attribute) &gt; 0">
   <xsl:text> {
 </xsl:text>
@@ -205,7 +208,7 @@ if(render_layer!=0) {
 <xsl:template match="signals">
 <xsl:for-each select="signal">
   <xsl:text>// Signal "</xsl:text><xsl:value-of select="@name"/><xsl:text>
-  signal_</xsl:text><xsl:value-of select="translate(./@name,$name_badchars,$name_goodchars)"/><xsl:text>(layer=layer);
+  signal_</xsl:text><xsl:value-of select="translate(./@name,$name_badchars,$name_goodchars)"/><xsl:text>(layer=layer,holes=holes,fill=false);
 </xsl:text>
 </xsl:for-each>
 </xsl:template>

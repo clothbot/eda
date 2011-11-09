@@ -39,7 +39,7 @@
 <xsl:value-of select="position()-1"/>
 </xsl:for-each>
 <xsl:text>]]</xsl:text>
-<xsl:text>);
+<xsl:text>,fill=fill);
 </xsl:text>
 </xsl:template>
 

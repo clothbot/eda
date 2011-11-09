@@ -6,11 +6,12 @@
 <xsl:template name="package-scad">
 <xsl:param name="library"/>
 <xsl:param name="package"/>
-<xsl:text>module package_</xsl:text><xsl:value-of select="$library"/><xsl:text>_</xsl:text><xsl:value-of select="$package"/><xsl:text>(layer=0) {
+<xsl:text>module package_</xsl:text><xsl:value-of select="$library"/><xsl:text>_</xsl:text><xsl:value-of select="$package"/><xsl:text>(layer=0,holes="yes",fill=false) {
 </xsl:text>
 <xsl:for-each select="*">
 <xsl:choose>
 <xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
+<xsl:when test="name()='hole'"><xsl:call-template name="hole"/></xsl:when>
 <xsl:when test="name()='pad'"><xsl:call-template name="pad"/></xsl:when>
 <xsl:when test="name()='polygon'"><xsl:call-template name="polygon"/></xsl:when>
 <xsl:when test="name()='rectangle'"><xsl:call-template name="rectangle"/></xsl:when>

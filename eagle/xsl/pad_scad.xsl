@@ -31,7 +31,7 @@
 <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
 </xsl:choose>
 </xsl:for-each>
-<xsl:text>);
+<xsl:text>,holes=holes);
 </xsl:text>
 </xsl:template>
 
