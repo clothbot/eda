@@ -12,6 +12,8 @@
 <xsl:include href="circle_scad.xsl"/>
 <xsl:include href="rectangle_scad.xsl"/>
 <xsl:include href="smd_scad.xsl"/>
+<xsl:include href="via_scad.xsl"/>
+<xsl:include href="polygon_scad.xsl"/>
 
 <xsl:template match="/">
 <xsl:text>// Render layer variable
@@ -30,6 +32,8 @@ if(render_layer!=0) {
 <xsl:call-template name="circle-scad"/>
 <xsl:call-template name="rectangle-scad"/>
 <xsl:call-template name="smd-scad"/>
+<xsl:call-template name="via-scad"/>
+<xsl:call-template name="polygon-scad"/>
 <xsl:text>// eagle2scad: begin
 </xsl:text>
 <xsl:apply-templates select="eagle"/>
@@ -251,6 +255,8 @@ if(render_layer!=0) {
 <xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
 <xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
 <xsl:when test="name()='rectangle'"><xsl:call-template name="rectangle"/></xsl:when>
+<xsl:when test="name()='polygon'"><xsl:call-template name="polygon"/></xsl:when>
+<xsl:when test="name()='via'"><xsl:call-template name="via"/></xsl:when>
 <xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
 </xsl:text></xsl:otherwise>
 </xsl:choose>
