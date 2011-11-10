@@ -4,7 +4,7 @@
 <xsl:output method="text"/>
 
 <xsl:template name="board-scad">
-<xsl:text>module board(layer=0,holes=render_holes,fill=false) {
+<xsl:text>module board(layer=0,holes=render_holes,fill=false,rank=0) {
 </xsl:text>
 <xsl:apply-templates select="plain"/>
 <xsl:apply-templates select="elements"/>
@@ -17,13 +17,7 @@
 <xsl:text>// Entering board
 </xsl:text>
 <xsl:apply-templates select="libraries"/>
-<xsl:for-each select="signals/signal">
-<xsl:call-template name="signal-scad">
-<xsl:with-param name="name">
-<xsl:value-of select="translate(./@name,$name_badchars,$name_goodchars)"/>
-</xsl:with-param>
-</xsl:call-template>
-</xsl:for-each>
+<xsl:call-template name="signals-scad"/>
 <xsl:call-template name="board-scad"/>
 <xsl:text>// Exiting board
 </xsl:text>

@@ -17,8 +17,10 @@
 <xsl:include href="wire_scad.xsl"/>
 
 <xsl:include href="board_scad.xsl"/>
-<xsl:include href="package_scad.xsl"/>
-<xsl:include href="signal_scad.xsl"/>
+<!-- <xsl:include href="package_scad.xsl"/> -->
+<!-- <xsl:include href="signal_scad.xsl"/> -->
+<xsl:include href="signals_scad.xsl"/>
+<xsl:include href="packages_scad.xsl"/>
 
 <xsl:include href="render3d_scad.xsl"/>
 
@@ -44,7 +46,7 @@ if(render_layer!=0) {
 <xsl:call-template name="smd-scad"/>
 <xsl:call-template name="via-scad"/>
 <xsl:call-template name="polygon-scad"/>
-<xsl:call-template name="board-scad"/>
+<!-- <xsl:call-template name="board-scad"/> -->
 <xsl:text>// eagle2scad: begin
 </xsl:text>
 <xsl:apply-templates select="eagle"/>
@@ -141,14 +143,7 @@ if(render_layer!=0) {
 <xsl:template match="library">
 <xsl:text>//Entering library
 </xsl:text>
-<xsl:for-each select="packages/package">
-<xsl:call-template name="package-scad">
-<xsl:with-param name="library">
-<xsl:value-of select="translate(../../@name,$name_badchars,$name_goodchars)"/>
-</xsl:with-param>
-<xsl:with-param name="package" select="translate(@name,$name_badchars,$name_goodchars)"/>
-</xsl:call-template>
-</xsl:for-each>
+<xsl:call-template name="packages-scad"/>
 <xsl:text>// Exiting library
 </xsl:text>
 </xsl:template>
@@ -176,8 +171,8 @@ if(render_layer!=0) {
   <xsl:when test="@rot='R180'"><xsl:text> rotate(180)</xsl:text></xsl:when>
   <xsl:when test="@rot='R270'"><xsl:text> rotate(270)</xsl:text></xsl:when>
  </xsl:choose>
- <xsl:text> </xsl:text>package_<xsl:value-of select="translate(@library,$name_badchars,$name_goodchars)"/><xsl:text>_</xsl:text>
- <xsl:value-of select="translate(@package,$name_badchars,$name_goodchars)"/><xsl:text>(layer=layer</xsl:text>
+ <xsl:text> package(library="</xsl:text><xsl:value-of select="@library"/><xsl:text>",package="</xsl:text>
+ <xsl:value-of select="@package"/><xsl:text>",layer=layer</xsl:text>
  <xsl:if test="@name"><xsl:text>, name="</xsl:text><xsl:value-of select="@name"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@value"><xsl:text>, value="</xsl:text><xsl:value-of select="@value"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@smashed"><xsl:text>, smashed="</xsl:text><xsl:value-of select="@smashed"/><xsl:text>"</xsl:text></xsl:if>
@@ -207,8 +202,7 @@ if(render_layer!=0) {
 
 <xsl:template match="signals">
 <xsl:for-each select="signal">
-  <xsl:text>// Signal "</xsl:text><xsl:value-of select="@name"/><xsl:text>
-  signal_</xsl:text><xsl:value-of select="translate(./@name,$name_badchars,$name_goodchars)"/><xsl:text>(layer=layer,holes=holes,fill=false);
+<xsl:text> signal(name="</xsl:text><xsl:value-of select="@name"/><xsl:text>",layer=layer,holes=holes,fill=fill,rank=rank);
 </xsl:text>
 </xsl:for-each>
 </xsl:template>
