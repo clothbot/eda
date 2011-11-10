@@ -4,8 +4,8 @@
 <xsl:output method="text"/>
 
 <xsl:template name="polygon-scad">
-<xsl:text>module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false) {
-  if(width&lt;=0 || fill) {
+<xsl:text>module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false,rank=0) {
+  if(width&lt;=0 || fill ) {
     polygon(points=points,paths=paths);
   } else {
     union() {

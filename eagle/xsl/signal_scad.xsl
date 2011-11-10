@@ -5,7 +5,7 @@
 
 <xsl:template name="signal-scad">
 <xsl:param name="name"/>
-<xsl:text>module signal_</xsl:text><xsl:value-of select="$name"/><xsl:text>(layer=0,holes="yes",fill=false) {
+<xsl:text>module signal_</xsl:text><xsl:value-of select="$name"/><xsl:text>(layer=0,holes="yes",fill=false,rank=0) {
 </xsl:text>
 <xsl:for-each select="*">
 <xsl:choose>
