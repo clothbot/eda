@@ -111,26 +111,34 @@ if(render_layer!=0) {
 
 <xsl:template match="layers">
 <xsl:text>// Entering layers
+//  [number,name,color,fill.visible,active]
+layers=[
 </xsl:text>
-<xsl:apply-templates select="layer"/>
-<xsl:text>// Exiting layers
+<xsl:for-each select="layer">
+<xsl:if test="position()=1"><xsl:text>   </xsl:text></xsl:if>
+<xsl:if test="not(position()=1)"><xsl:text>  ,</xsl:text></xsl:if>
+<xsl:text>[</xsl:text><xsl:value-of select="@number"/>
+<xsl:text>,"</xsl:text><xsl:value-of select="@name"/><xsl:text>"</xsl:text>
+<xsl:text>,</xsl:text><xsl:value-of select="@color"/>
+<xsl:text>,</xsl:text><xsl:value-of select="@fill"/>
+<xsl:text>,"</xsl:text><xsl:value-of select="@visible"/><xsl:text>"</xsl:text>
+<xsl:text>,"</xsl:text><xsl:value-of select="@active"/><xsl:text>"]
+</xsl:text>
+</xsl:for-each>
+<xsl:text>];
+</xsl:text>
+<xsl:text>function layer_lookup(number) = lookup(number,[</xsl:text>
+<xsl:for-each select="layer">
+<xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
+<xsl:text>[</xsl:text><xsl:value-of select="@number"/><xsl:text>,</xsl:text><xsl:value-of select="position()-1"/><xsl:text>]</xsl:text>
+</xsl:for-each>
+<xsl:text>]);
+</xsl:text>
+<xsl:text>
+// Exiting layers
 </xsl:text>
 </xsl:template>
 
-<xsl:template match="layer">
-<xsl:text>// Layer </xsl:text><xsl:value-of select="@number"/><xsl:text>
-</xsl:text>
-<xsl:text>  layer_</xsl:text><xsl:value-of select="@number"/><xsl:text>_name="</xsl:text><xsl:value-of select="@name"/><xsl:text>";
-</xsl:text>
-<xsl:text>  layer_</xsl:text><xsl:value-of select="@number"/><xsl:text>_color=</xsl:text><xsl:value-of select="@color"/><xsl:text>;
-</xsl:text>
-<xsl:text>  layer_</xsl:text><xsl:value-of select="@number"/><xsl:text>_fill=</xsl:text><xsl:value-of select="@fill"/><xsl:text>;
-</xsl:text>
-<xsl:text>  layer_</xsl:text><xsl:value-of select="@number"/><xsl:text>_visible="</xsl:text><xsl:value-of select="@visible"/><xsl:text>";
-</xsl:text>
-<xsl:text>  layer_</xsl:text><xsl:value-of select="@number"/><xsl:text>_active="</xsl:text><xsl:value-of select="@active"/><xsl:text>";
-</xsl:text>
-</xsl:template>
 
 <xsl:template match="libraries">
 <xsl:text>// Entering libraries
