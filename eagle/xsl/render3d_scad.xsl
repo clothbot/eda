@@ -29,8 +29,8 @@ render3d_board_th=4.0;
 <xsl:text>  union() {
     // Rendering Top
     translate([0,0,render3d_board_th/2]) {
-      linear_extrude(height=render3d_top_th,center=true) board(layer=1,holes="no",fill=true);
-      linear_extrude(height=render3d_top_th,center=true) board(layer=17,holes="no",fill=true);
+      linear_extrude(height=render3d_top_th,center=true) board(layer=1,holes="no",fill=false);
+      linear_extrude(height=render3d_top_th,center=true) board(layer=17,holes="no",fill=false);
     }
     // Rendering Pads
     linear_extrude(height=render3d_top_th+render3d_board_th+render3d_bottom_th,center=true) board(layer=17,holes="only",fill=true);
@@ -40,8 +40,8 @@ render3d_board_th=4.0;
     linear_extrude(height=render3d_top_th+render3d_board_th+render3d_bottom_th,center=true) board(layer=45,holes="only",fill=true);
     // Rendering Bottom
     translate([0,0,-render3d_board_th/2]) {
-      linear_extrude(height=render3d_bottom_th,center=true) board(layer=16,holes="no",fill=true);
-      linear_extrude(height=render3d_bottom_th,center=true) board(layer=17,holes="no",fill=true);
+      linear_extrude(height=render3d_bottom_th,center=true) board(layer=16,holes="no",fill=false);
+      linear_extrude(height=render3d_bottom_th,center=true) board(layer=17,holes="no",fill=false);
     }
   }
 </xsl:text>
