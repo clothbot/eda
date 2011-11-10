@@ -13,19 +13,15 @@ render3d_board_th=4.0;
 
 <xsl:template name="render3d">
 <xsl:text>if(render_layer==0) {
+  for(i=[0:</xsl:text><xsl:value-of select="count(/eagle/drawing/layers/layer)"/><xsl:text>]) assign(layer_number=layers[i][0]) { 
+    // Testing layer_lookup
+    if(layers[layer_lookup(layer_number)][4]=="yes") {
+      echo(str("Visible layer ",layer_number,"(",layers[layer_lookup(layer_number)][1],")"));
+    } else {
+      echo(str("Not visible layer ",layer_number,"(",layers[layer_lookup(layer_number)][1],")"));
+    }
+  }
 </xsl:text>
-<xsl:for-each select="/eagle/drawing/layers/layer">
-<xsl:choose>
-<xsl:when test="@visible='yes'">
-<xsl:text>  echo("Visible layer </xsl:text><xsl:value-of select="@number"/><xsl:text> (</xsl:text><xsl:value-of select="@name"/><xsl:text>)");
-</xsl:text>
-</xsl:when>
-<xsl:otherwise>
-<xsl:text>  echo("Not visible layer </xsl:text><xsl:value-of select="@number"/><xsl:text> (</xsl:text><xsl:value-of select="@name"/><xsl:text>)");
-</xsl:text>
-</xsl:otherwise>
-</xsl:choose>
-</xsl:for-each>
 <xsl:text>  union() {
     // Rendering Top
     translate([0,0,render3d_board_th/2]) {
