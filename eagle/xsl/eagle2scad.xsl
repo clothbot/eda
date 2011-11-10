@@ -17,8 +17,6 @@
 <xsl:include href="wire_scad.xsl"/>
 
 <xsl:include href="board_scad.xsl"/>
-<!-- <xsl:include href="package_scad.xsl"/> -->
-<!-- <xsl:include href="signal_scad.xsl"/> -->
 <xsl:include href="signals_scad.xsl"/>
 <xsl:include href="packages_scad.xsl"/>
 
@@ -46,7 +44,6 @@ if(render_layer!=0) {
 <xsl:call-template name="smd-scad"/>
 <xsl:call-template name="via-scad"/>
 <xsl:call-template name="polygon-scad"/>
-<!-- <xsl:call-template name="board-scad"/> -->
 <xsl:text>// eagle2scad: begin
 </xsl:text>
 <xsl:apply-templates select="eagle"/>
@@ -165,7 +162,11 @@ layers=[
 <xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
 <xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
 <xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
-<xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
+<xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text> </xsl:text>
+<xsl:for-each select="@*">
+<xsl:text> </xsl:text><xsl:value-of select="name()"/><xsl:text>="</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text>
+</xsl:for-each>
+<xsl:text>
 </xsl:text></xsl:otherwise>
 </xsl:choose>
 </xsl:for-each>

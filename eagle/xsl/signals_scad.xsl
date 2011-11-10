@@ -20,7 +20,11 @@
 <xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>
 <xsl:when test="name()='via'"><xsl:call-template name="via"/></xsl:when>
 <xsl:when test="name()='wire'"><xsl:call-template name="wire"/></xsl:when>
-<xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text>
+<xsl:otherwise><xsl:text>// Ignoring </xsl:text><xsl:value-of select="name()"/><xsl:text> </xsl:text>
+<xsl:for-each select="@*">
+<xsl:text> </xsl:text><xsl:value-of select="name()"/><xsl:text>="</xsl:text><xsl:value-of select="."/><xsl:text>"</xsl:text>
+</xsl:for-each>
+<xsl:text>
 </xsl:text></xsl:otherwise>
 </xsl:choose>
 </xsl:for-each>
