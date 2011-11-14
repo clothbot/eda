@@ -4,7 +4,34 @@
 <xsl:output method="text"/>
 
 <xsl:template name="polygon-scad">
-<xsl:text>module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false,rank=0) {
+<xsl:text>module polygon_outline(points,paths,inset,extend=0.0) {
+  for(i=[0:len(paths)-1]) intersection() {
+    polygon(points=points,paths=paths);
+    assign(thisPath=paths[i]) {
+      for(j=[1:len(thisPath)-1]) 
+        assign(x1=points[thisPath[j-1]][0],y1=points[thisPath[j-1]][1],x2=thisPath[j][0], y2=thisPath[j][1]) {
+          wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
+      }
+      assign(x1=points[thisPath[len(thisPath)-1]][0],y1=points[thisPath[len(thisPath)-1]][1],x2=thisPath[0][0], y2=thisPath[0][1])
+        wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
+    }
+  }
+  if(extend&gt;0.0) {
+   for(i=[0:len(paths)-1]) difference() {
+    union() assign(thisPath=paths[i]) {
+      for(j=[1:len(thisPath)-1]) 
+        assign(x1=points[thisPath[j-1]][0],y1=points[thisPath[j-1]][1],x2=thisPath[j][0], y2=thisPath[j][1]) {
+          wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
+      }
+      assign(x1=points[thisPath[len(thisPath)-1]][0],y1=points[thisPath[len(thisPath)-1]][1],x2=thisPath[0][0], y2=thisPath[0][1])
+        wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
+    }
+   }
+   polygon(points=points,paths=paths);
+  }
+}
+
+module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false,rank=0) {
   if(width&lt;=0 || fill ) {
     polygon(points=points,paths=paths);
   } else {
