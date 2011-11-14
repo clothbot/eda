@@ -5,29 +5,28 @@
 
 <xsl:template name="polygon-scad">
 <xsl:text>module polygon_outline(points,paths,inset,extend=0.0) {
-  for(i=[0:len(paths)-1]) intersection() {
+  intersection() {
     polygon(points=points,paths=paths);
-    assign(thisPath=paths[i]) {
-      for(j=[1:len(thisPath)-1]) 
-        assign(x1=points[thisPath[j-1]][0],y1=points[thisPath[j-1]][1],x2=thisPath[j][0], y2=thisPath[j][1]) {
+    union() for(i=[0:len(paths)-1]) {
+      assign(thisPath=paths[i]) {
+        for(j=[1:len(thisPath)-1]) assign(x1=points[thisPath[j-1]][0],y1=points[thisPath[j-1]][1],x2=points[thisPath[j]][0], y2=points[thisPath[j]][1])
+            wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
+        assign(x1=points[thisPath[len(thisPath)-1]][0],y1=points[thisPath[len(thisPath)-1]][1],x2=points[thisPath[0]][0], y2=points[thisPath[0]][1])
           wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
       }
-      assign(x1=points[thisPath[len(thisPath)-1]][0],y1=points[thisPath[len(thisPath)-1]][1],x2=thisPath[0][0], y2=thisPath[0][1])
-        wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
     }
   }
   if(extend&gt;0.0) {
-   for(i=[0:len(paths)-1]) difference() {
-    union() assign(thisPath=paths[i]) {
-      for(j=[1:len(thisPath)-1]) 
-        assign(x1=points[thisPath[j-1]][0],y1=points[thisPath[j-1]][1],x2=thisPath[j][0], y2=thisPath[j][1]) {
+    difference() {
+      union() for(i=[0:len(paths)-1]) assign(thisPath=paths[i]) {
+        for(j=[1:len(thisPath)-1]) assign(x1=points[thisPath[j-1]][0],y1=points[thisPath[j-1]][1],x2=points[thisPath[j]][0], y2=points[thisPath[j]][1]) {
+            wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
+          }
+        assign(x1=points[thisPath[len(thisPath)-1]][0],y1=points[thisPath[len(thisPath)-1]][1],x2=points[thisPath[0]][0], y2=points[thisPath[0]][1])
           wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
       }
-      assign(x1=points[thisPath[len(thisPath)-1]][0],y1=points[thisPath[len(thisPath)-1]][1],x2=thisPath[0][0], y2=thisPath[0][1])
-        wire(x1=x1,y1=y1,x2=x2,y2=y2,width=2*inset);
+      polygon(points=points,paths=paths);
     }
-   }
-   polygon(points=points,paths=paths);
   }
 }
 
@@ -35,14 +34,15 @@ module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false
   if(width&lt;=0 || fill ) {
     polygon(points=points,paths=paths);
   } else {
-    union() {
-      for(i=[0:rot_res-1]) assign(rotAngle=360*i/rot_res) {
-        render() difference() {
-          polygon(points=points,paths=paths);
-          translate([-width*cos(rotAngle),-width*sin(rotAngle)])polygon(points=points,paths=paths);
-        }
-      }
-    }
+    polygon_outline(points,paths,inset=width/2,extend=width/2);
+//     union() {
+//       for(i=[0:rot_res-1]) assign(rotAngle=360*i/rot_res) {
+//         render() difference() {
+//           polygon(points=points,paths=paths);
+//           translate([-width*cos(rotAngle),-width*sin(rotAngle)])polygon(points=points,paths=paths);
+//         }
+//       }
+//     }
   }
 }
 </xsl:text>
