@@ -4,7 +4,7 @@
 <xsl:output method="text"/>
 
 <xsl:template name="packages-scad">
-<xsl:text>module package(library,package,layer=0,holes="yes",fill=false,rank=0) {
+<xsl:text>module package(library,package,layer=0,holes="yes",fill=false,rank=0,extend=0.0) {
 </xsl:text>
 <xsl:for-each select="/eagle/drawing/board/libraries/library">
 <xsl:text>  if(library=="</xsl:text><xsl:value-of select="@name"/><xsl:text>") {

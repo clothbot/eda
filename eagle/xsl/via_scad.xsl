@@ -4,8 +4,8 @@
 <xsl:output method="text"/>
 
 <xsl:template name="via-scad">
-<xsl:text>module via(x,y,drill,extent=[0,0]) {
-  translate([x,y]) circle($fn=16,r=drill/2);
+<xsl:text>module via(x,y,drill,extent=[0,0],extend=0.0) {
+  translate([x,y]) circle($fn=16,r=(drill+2*extend)/2);
 }
 </xsl:text>
 </xsl:template>
@@ -20,7 +20,7 @@
 <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
 </xsl:choose>
 </xsl:for-each>
-<xsl:text>);
+<xsl:text>,extend=extend);
 </xsl:text>
 </xsl:template>
 

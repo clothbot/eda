@@ -30,19 +30,11 @@
   }
 }
 
-module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false,rank=0) {
+module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false,rank=0,extend=0.0) {
   if(width&lt;=0 || fill ) {
     polygon(points=points,paths=paths);
   } else {
-    polygon_outline(points,paths,inset=width/2,extend=width/2);
-//     union() {
-//       for(i=[0:rot_res-1]) assign(rotAngle=360*i/rot_res) {
-//         render() difference() {
-//           polygon(points=points,paths=paths);
-//           translate([-width*cos(rotAngle),-width*sin(rotAngle)])polygon(points=points,paths=paths);
-//         }
-//       }
-//     }
+    polygon_outline(points,paths,inset=width,extend=extend);
   }
 }
 </xsl:text>
@@ -66,7 +58,7 @@ module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false
 <xsl:value-of select="position()-1"/>
 </xsl:for-each>
 <xsl:text>]]</xsl:text>
-<xsl:text>,fill=fill);
+<xsl:text>,fill=fill,extend=extend);
 </xsl:text>
 </xsl:template>
 

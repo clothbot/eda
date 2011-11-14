@@ -4,8 +4,8 @@
 <xsl:output method="text"/>
 
 <xsl:template name="smd-scad">
-<xsl:text>module smd(x,y,dx,dy,layer=0,name="",rot=0.0) {
-  translate([x,y]) rotate(rot) square(size=[dx,dy],center=true);
+<xsl:text>module smd(x,y,dx,dy,layer=0,name="",rot=0.0,extend=0.0) {
+  translate([x,y]) rotate(rot) square(size=[dx+2*extend,dy+2*extend],center=true);
 }
 </xsl:text>
 </xsl:template>
@@ -28,7 +28,7 @@
 <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
 </xsl:choose>
 </xsl:for-each>
-<xsl:text>);
+<xsl:text>,extend=extend);
 </xsl:text>
 </xsl:template>
 

@@ -4,8 +4,8 @@
 <xsl:output method="text"/>
 
 <xsl:template name="rectangle-scad">
-<xsl:text>module eagle_rectangle(x1,y1,x2,y2,layer=0) {
-  polygon(points=[[x1,y1],[x2,y1],[x2,y2],[x1,y2]],paths=[[0,1,2,3]]);
+<xsl:text>module eagle_rectangle(x1,y1,x2,y2,layer=0,extend=0.0) {
+  polygon(points=[[x1-extend,y1-extend],[x2+extend,y1-extend],[x2+extend,y2+extend],[x1-extend,y2+extend]],paths=[[0,1,2,3]]);
 }
 </xsl:text>
 </xsl:template>
@@ -16,7 +16,7 @@
 <xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
 <xsl:value-of select="name()"/><xsl:text>=</xsl:text><xsl:value-of select="."/>
 </xsl:for-each>
-<xsl:text>);
+<xsl:text>,extend=extend);
 </xsl:text>
 </xsl:template>
 

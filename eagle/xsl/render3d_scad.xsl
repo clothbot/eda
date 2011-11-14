@@ -13,7 +13,7 @@ render3d_board_th=4.0;
 
 <xsl:template name="render3d">
 <xsl:text>if(render_layer==0) {
-  for(i=[0:</xsl:text><xsl:value-of select="count(/eagle/drawing/layers/layer)"/><xsl:text>]) assign(layer_number=layers[i][0]) { 
+  for(i=[0:</xsl:text><xsl:value-of select="count(/eagle/drawing/layers/layer)"/><xsl:text>-1]) assign(layer_number=layers[i][0]) { 
     // Testing layer_lookup
     if(layers[layer_lookup(layer_number)][4]=="yes") {
       echo(str("Visible layer ",layer_number,"(",layers[layer_lookup(layer_number)][1],")"));
@@ -25,19 +25,19 @@ render3d_board_th=4.0;
 <xsl:text>  union() {
     // Rendering Top
     translate([0,0,render3d_board_th/2]) {
-      linear_extrude(height=render3d_top_th,center=true) board(layer=1,holes="no",fill=false);
-      linear_extrude(height=render3d_top_th,center=true) board(layer=17,holes="no",fill=false);
+      linear_extrude(height=render3d_top_th,center=true) board(layer=1,holes="no",fill=false,extend=0.0);
+      linear_extrude(height=render3d_top_th,center=true) board(layer=17,holes="no",fill=false,extend=0.0);
     }
     // Rendering Pads
-    linear_extrude(height=render3d_top_th+render3d_board_th+render3d_bottom_th,center=true) board(layer=17,holes="only",fill=true);
+    linear_extrude(height=render3d_top_th+render3d_board_th+render3d_bottom_th,center=true) board(layer=17,holes="only",fill=true,extend=0.0);
     // Rendering Vias
-    linear_extrude(height=render3d_top_th+render3d_board_th+render3d_bottom_th,center=true) board(layer=18,holes="only",fill=true);
+    linear_extrude(height=render3d_top_th+render3d_board_th+render3d_bottom_th,center=true) board(layer=18,holes="only",fill=true,extend=0.0);
     // Rendering Holes
-    linear_extrude(height=render3d_top_th+render3d_board_th+render3d_bottom_th,center=true) board(layer=45,holes="only",fill=true);
+    linear_extrude(height=render3d_top_th+render3d_board_th+render3d_bottom_th,center=true) board(layer=45,holes="only",fill=true,extend=0.0);
     // Rendering Bottom
     translate([0,0,-render3d_board_th/2]) {
-      linear_extrude(height=render3d_bottom_th,center=true) board(layer=16,holes="no",fill=false);
-      linear_extrude(height=render3d_bottom_th,center=true) board(layer=17,holes="no",fill=false);
+      linear_extrude(height=render3d_bottom_th,center=true) board(layer=16,holes="no",fill=false,extend=0.0);
+      linear_extrude(height=render3d_bottom_th,center=true) board(layer=17,holes="no",fill=false,extend=0.0);
     }
   }
 </xsl:text>

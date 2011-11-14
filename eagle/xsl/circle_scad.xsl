@@ -4,8 +4,8 @@
 <xsl:output method="text"/>
 
 <xsl:template name="circle-scad">
-<xsl:text>module eagle_circle(x,y,radius,width,layer=0,fill=false) {
-  width=max(grid_distance/10,width);
+<xsl:text>module eagle_circle(x,y,radius,width,layer=0,fill=false,extend=0.0) {
+  width=max(grid_distance/10,width+2*extend);
   if(fill) {
     translate([x,y]) circle($fn=16,r=radius);
   } else {
@@ -24,7 +24,7 @@
 <xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
 <xsl:value-of select="name()"/><xsl:text>=</xsl:text><xsl:value-of select="."/>
 </xsl:for-each>
-<xsl:text>);
+<xsl:text>,extend=extend);
 </xsl:text>
 </xsl:template>
 

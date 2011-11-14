@@ -29,7 +29,7 @@ render_holes="yes"; // render_holes={"yes"|"no"|"only"};
 render_fill=false; // render_fill={true|false};
 if(render_layer!=0) {
   echo("Rendering layer: ",render_layer);
-  board(layer=render_layer,fill=render_fill);
+  board(layer=render_layer,fill=render_fill,extend=0.0);
 }
 </xsl:text>
 <xsl:text>// OpenSCAD Definitions
@@ -185,7 +185,7 @@ layers=[
  <xsl:if test="@name"><xsl:text>, name="</xsl:text><xsl:value-of select="@name"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@value"><xsl:text>, value="</xsl:text><xsl:value-of select="@value"/><xsl:text>"</xsl:text></xsl:if>
  <xsl:if test="@smashed"><xsl:text>, smashed="</xsl:text><xsl:value-of select="@smashed"/><xsl:text>"</xsl:text></xsl:if>
- <xsl:text>,holes=holes)</xsl:text>
+ <xsl:text>,holes=holes,extend=extend)</xsl:text>
  <xsl:if test="count(attribute) &gt; 0">
   <xsl:text> {
 </xsl:text>
@@ -211,7 +211,7 @@ layers=[
 
 <xsl:template match="signals">
 <xsl:for-each select="signal">
-<xsl:text> signal(name="</xsl:text><xsl:value-of select="@name"/><xsl:text>",layer=layer,holes=holes,fill=fill,rank=rank);
+<xsl:text> signal(name="</xsl:text><xsl:value-of select="@name"/><xsl:text>",layer=layer,holes=holes,fill=fill,rank=rank,extend=extend);
 </xsl:text>
 </xsl:for-each>
 </xsl:template>

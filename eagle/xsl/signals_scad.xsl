@@ -4,7 +4,7 @@
 <xsl:output method="text"/>
 
 <xsl:template name="signals-scad">
-<xsl:text>module signal(name="GND",layer=0,holes="yes",fill=false,rank=0) {
+<xsl:text>module signal(name="GND",layer=0,holes="yes",fill=false,rank=0,extend=0.0) {
 </xsl:text>
 <xsl:for-each select="/eagle/drawing/board/signals/signal">
 <xsl:text>  if(name=="</xsl:text><xsl:value-of select="@name"/><xsl:text>") {
