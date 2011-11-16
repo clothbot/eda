@@ -13,6 +13,8 @@
 <xsl:text>    if(package=="</xsl:text><xsl:value-of select="@name"/><xsl:text>") {
 </xsl:text>
 <xsl:for-each select="*">
+<xsl:if test="@layer"><xsl:text>  if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) </xsl:text></xsl:if>
+<xsl:if test="name()='pad'"><xsl:text>  if(layer==</xsl:text><xsl:value-of select="/eagle/drawing/layers/layer[@name='Pads']/@number"/><xsl:text>) </xsl:text></xsl:if>
 <xsl:choose>
 <xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
 <xsl:when test="name()='hole'"><xsl:call-template name="hole"/></xsl:when>

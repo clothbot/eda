@@ -27,6 +27,7 @@
 <xsl:text>// board plain geometry
 </xsl:text>
 <xsl:for-each select="*">
+<xsl:text>  if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) </xsl:text>
 <xsl:choose>
 <xsl:when test="name()='circle'"><xsl:call-template name="circle"/></xsl:when>
 <xsl:when test="name()='text'"><xsl:call-template name="text"/></xsl:when>

@@ -41,11 +41,10 @@ module eagle_polygon(points,paths,layer=0,width=0,isolate=0,rot_res=8,fill=false
 </xsl:template>
 
 <xsl:template name="polygon">
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/>
 <xsl:choose>
-<xsl:when test="@rank"><xsl:text> &amp;&amp; rank&gt;=</xsl:text><xsl:value-of select="@rank"/></xsl:when>
+<xsl:when test="@rank"><xsl:text> if(rank&gt;=</xsl:text><xsl:value-of select="@rank"/><xsl:text>) </xsl:text></xsl:when>
 </xsl:choose>
-<xsl:text>) eagle_polygon(</xsl:text>
+<xsl:text> eagle_polygon(</xsl:text>
 <xsl:for-each select="@*">
 <xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
 <xsl:value-of select="name()"/><xsl:text>=</xsl:text><xsl:value-of select="."/>

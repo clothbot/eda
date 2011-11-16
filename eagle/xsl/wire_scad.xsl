@@ -20,7 +20,7 @@
 </xsl:template>
 
 <xsl:template name="wire">
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="@layer"/><xsl:text>) wire(</xsl:text>
+<xsl:text> wire(</xsl:text>
 <xsl:for-each select="@*">
 <xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
 <xsl:value-of select="name()"/><xsl:text>=</xsl:text>

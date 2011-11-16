@@ -11,7 +11,7 @@
 </xsl:template>
 
 <xsl:template name="via">
-<xsl:text> if(layer==</xsl:text><xsl:value-of select="/eagle/drawing/layers/layer[@name='Vias']/@number"/><xsl:text>) via(</xsl:text>
+<xsl:text> via(</xsl:text>
 <xsl:for-each select="@*">
 <xsl:if test="not(position()=1)"><xsl:text>,</xsl:text></xsl:if>
 <xsl:value-of select="name()"/><xsl:text>=</xsl:text>

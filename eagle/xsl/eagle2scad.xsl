@@ -140,12 +140,12 @@ layers=[
 <xsl:template match="libraries">
 <xsl:text>// Entering libraries
 </xsl:text>
-<xsl:apply-templates select="library"/>
+<xsl:call-template name="library"/>
 <xsl:text>// Exiting libraries
 </xsl:text>
 </xsl:template>
 
-<xsl:template match="library">
+<xsl:template name="library">
 <xsl:text>//Entering library
 </xsl:text>
 <xsl:call-template name="packages-scad"/>
